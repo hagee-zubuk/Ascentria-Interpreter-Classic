@@ -2201,9 +2201,15 @@ ElseIf Request("ctrl") = 10 Then
 			If tmpEntry(1) = 3 or tmpEntry(1) = 4 Then
 				If GetEmailIntr(tmpIntr) <> "" Then
 					Set mlMail = CreateObject("CDO.Message")
-					mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
-					mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
-					mlMail.Configuration.Fields.Update
+With mlMail.Configuration
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
+	.Fields.Update
+End With
 					mlMail.To = GetEmailIntr(tmpIntr)
 					mlMail.Cc = "language.services@thelanguagebank.org"
 					mlMail.Bcc = "patrick@zubuk.com"

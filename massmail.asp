@@ -20,9 +20,15 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 	Do Until rsEmail.EOF
 		If rsEmail("email") <> "" Or rsEmail("fax") <> "" Then
 			Set mlMail = CreateObject("CDO.Message")
-			mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing") = 2
-			mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
-			mlMail.Configuration.Fields.Update
+With mlMail.Configuration
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
+	.Fields.Update
+End With
 			myEmailAdr = rsEmail("email")
 			If myEmailAdr = "" Then myEmailAdr = CleanFax(rsEmail("fax")) & "@emailfaxservice.com" 
 			mlMail.To = myEmailAdr

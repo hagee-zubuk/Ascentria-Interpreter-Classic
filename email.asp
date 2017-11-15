@@ -79,9 +79,15 @@ End If
 'SEND EMAIL
 'on error resume next
 Set mlMail = CreateObject("CDO.Message")
-mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")=2
-mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
-mlMail.Configuration.Fields.Update
+With mlMail.Configuration
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
+	.Fields.Update
+End With
 mlMail.To = Replace(Request("emailadd"),"'","")
 mlMail.Cc = "language.services@thelanguagebank.org"
 mlMail.Bcc = "patrick@zubuk.com"

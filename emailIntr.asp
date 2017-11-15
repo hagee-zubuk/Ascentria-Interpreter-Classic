@@ -33,9 +33,15 @@ If Request("mail") = 1 Then 'Request.ServerVariables("REQUEST_METHOD") = "POST" 
 	'SEND EMAIL
 	'on error resume next
 	Set mlMail = CreateObject("CDO.Message")
-	mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")=2
-	mlMail.Configuration.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver") = "localhost"
-	mlMail.Configuration.Fields.Update
+With mlMail.Configuration
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
+	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
+	.Fields.Update
+End With
 	mlMail.To = GetEmail(Request("selIntr"))
 	mlMail.BCC = "patrick@zubuk.com"
 	mlMail.From = "language.services@thelanguagebank.org"
