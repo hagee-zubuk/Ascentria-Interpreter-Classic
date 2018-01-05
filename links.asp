@@ -53,7 +53,11 @@
 										<div style="margin-left: 20px;" class="trainings">
 	<p><a class="Admin" href="http://intranet.ascentria.org/default.aspx" target="_blank">Ascentria Intranet</a></p>
 	<p><a class="Admin" href="https://securefile.ascentria.org/filedrop/LBInterpreterInfo" target="_blank">Ascentria Secure File Transfer</a><br />
-	Please use this link to upload your credentials (training and cont. education certificates) and proof of immunization ONLY</p>
+		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** Please use this link to upload your credentials
+		(training and continuing education certificates) and proof of immunization ONLY</p>
+	
+	<p><a class="Admin" href="foi.asp" target="_BLANK">Authorization for Release of Information</a></p>
+	
 	<p><a class="Admin" href="fwa.asp" target="_self">FWA Training</a></p>
 	<p><a class="Admin" href="http://www.imiaweb.org/code/" target="_blank">IMIA Code of Ethics for Medical Interpreters</a></p>
 	<p><a class="Admin" href="pdf.asp" target="_self">Interpreter Guidlines</a></p>

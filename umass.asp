@@ -48,7 +48,7 @@ Set objStream = Server.CreateObject("ADODB.Stream")
 objStream.Type = 1 'adTypeBinary
 objStream.Open
 objStream.LoadFromFile(attachPDF)
-Response.ContentType = "application/octet-stream"
+Response.ContentType = "application/pdf"
 Response.Addheader "Content-Disposition", "attachment; filename=""" & fname  & """"
 'Response.Addheader "Content-Length", objStream.Size
 Response.BinaryWrite objStream.Read

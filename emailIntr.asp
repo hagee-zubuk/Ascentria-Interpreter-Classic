@@ -32,20 +32,6 @@ If Request("mail") = 1 Then 'Request.ServerVariables("REQUEST_METHOD") = "POST" 
 	Set rsReq = Nothing
 	'SEND EMAIL
 	'on error resume next
-	Set mlMail = CreateObject("CDO.Message")
-With mlMail.Configuration
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
-	.Fields.Update
-End With
-	mlMail.To = GetEmail(Request("selIntr"))
-	mlMail.BCC = "patrick@zubuk.com"
-	mlMail.From = "language.services@thelanguagebank.org"
-	mlMail.Subject= "Appointment on " & appDate & " at " & apptime & " in " & appCity
 	strMSG = "Are you available to do this appointment?<br><br>"& _
 		"If you accept this appointment this is the amount you will be reimbursed for mileage and travel time. " & _
 		"Payable travel time is " & Z_Czero(Request("txtTravel")) & " hrs. " & _
@@ -53,9 +39,10 @@ End With
 		"Please reply to this email or contact " & Request.Cookies("LBUsrName") & " of LanguageBank.<br><br>"& _
 		"Thank you.<BR><BR><BR>" & _
 		"<font color='#FFFFFF'>" & Request("adr1") & "|" & Request("adr2") & "|" & Request("zip1") & "|" & Request("zip2") & "</font>"
-	mlMail.HTMLBody = "<html><body>" & vbCrLf & strMSG & vbCrLf & "</body></html>"
-	mlMail.Send
-	set mlMail=nothing
+	
+	retVal = zSendMessage(GetEmail(Request("selIntr")), "" _
+			, "Appointment on " & appDate & " at " & apptime & " in " & appCity, strMSG)
+	
 	'save to notes
 	IntrName = GetIntr2(Request("selIntr"))
 	Set rsNotes = Server.CreateObject("ADODB.RecordSet")

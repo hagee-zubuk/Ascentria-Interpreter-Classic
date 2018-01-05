@@ -78,23 +78,13 @@ End If
 	
 'SEND EMAIL
 'on error resume next
-Set mlMail = CreateObject("CDO.Message")
-With mlMail.Configuration
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
-	.Fields.Update
-End With
+Set mlMail = zSetEmailConfig()
 mlMail.To = Replace(Request("emailadd"),"'","")
 mlMail.Cc = "language.services@thelanguagebank.org"
 mlMail.Bcc = "patrick@zubuk.com"
 mlMail.From = "language.services@thelanguagebank.org"
-'mlMail.Subject="Interpreter Request - The Language Bank - STAGING"
 If Request("sino") = 0 Then 'FOR REQUESTOR
-	mlMail.Subject= "Interpreter Confirmation - The Language Bank"
+	mlMail.Subject = "Interpreter Confirmation - The Language Bank"
 	strBody = "<table cellpadding='0' cellspacing='0' border='0' align='center'>" & vbCrLf & _
 			"<tr><td align='center'>" & vbCrLf & _
 				"<img src='http://web03.zubuk.com/lss-lbis-staging/images/LBISLOGOBandW.jpg'>" & vbCrLf & _
@@ -319,7 +309,10 @@ ElseIf Request("sino") = 1 Then 'FOR INTERPRETER
 	mlMail.AddAttachment attachPDF
 End If
 'response.write strbody
+On Error Resume Next
 mlMail.Send
+blnOK = zLogMailMessage(Err.Number, mlMail.To, mlMail.Subject, z_SMTPServer(lngIdx), mlMail.HTMLBody, mlMail.Bcc)
+On Error Goto 0
 set mlMail=nothing
 
 'CREATE LOG

@@ -2200,21 +2200,6 @@ ElseIf Request("ctrl") = 10 Then
 		If Request("email") = 1 Then
 			If tmpEntry(1) = 3 or tmpEntry(1) = 4 Then
 				If GetEmailIntr(tmpIntr) <> "" Then
-					Set mlMail = CreateObject("CDO.Message")
-With mlMail.Configuration
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusing")		= 2
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserver")		= "smtp.socketlabs.com"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpserverport")	= 2525
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendusername")		= "server3874"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/sendpassword")		= "UO2CUSxat9ZmzYD7jkTB"
-	.Fields.Item("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate")	= 1 'basic (clear-text) authentication
-	.Fields.Update
-End With
-					mlMail.To = GetEmailIntr(tmpIntr)
-					mlMail.Cc = "language.services@thelanguagebank.org"
-					mlMail.Bcc = "patrick@zubuk.com"
-					mlMail.From = "language.services@thelanguagebank.org"
-					mlMail.Subject = "Appointment Cancellation " & tmpDate & "; " & tmpTime & ", " & tmpCity & " - " &  tmpInst
 					strBody = "This is to let you know that appointment on " & _
 						 tmpDate & ", " & tmpTime & ", in " & tmpCity & " at " & tmpInst & " for " & tmpFname & " is CANCELED.<br>" & _
 						 "If you have any questions please contact the LanguageBank office immediately at 410-6183 or email us at " & _
@@ -2222,9 +2207,9 @@ End With
 						 "E-mail about this cancelation was initiated by " & Request.Cookies("LBUsrName") & ".<br><br>" & _
 						 "Thanks,<br>" & _
 						 "Language Bank"
-					mlMail.HTMLBody = "<html><body>" & vbCrLf & strBody & vbCrLf & "</body></html>"
-					mlMail.Send
-					Set mlMail = Nothing
+					retVal = zSendMessage(GetEmailIntr(tmpIntr), "language.services@thelanguagebank.org" _
+							, "Appointment Cancellation " & tmpDate & "; " & tmpTime & ", " & tmpCity & " - " &  tmpInst _
+							, strBody)
 					'save to notes
 					IntrName = GetIntr2(tmpIntr)
 					Set rsNotes = Server.CreateObject("ADODB.RecordSet")
@@ -2236,7 +2221,7 @@ End With
 					End If
 					rsNotes.CLose
 					Set rsNotes = Nothing
-					Session("MSG") = "Cancelation email sent to " & GetEmailIntr(tmpIntr)
+					Session("MSG") = "Cancelation email sent to " & GetEmailIntr(tmpIntr) & " (" & retVal & ")"
 				Else
 					Session("MSG") = "ERROR: Interpreter has no email address assigned."
 				End If
