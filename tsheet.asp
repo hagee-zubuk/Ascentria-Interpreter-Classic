@@ -106,7 +106,9 @@
 				sunTS = sunTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 					"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-					"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+					"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -183,7 +185,9 @@
 				monTS = monTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				  "<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				  "<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				  "<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				  "<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -260,7 +264,9 @@
 				tueTS = tueTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				 	"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -337,7 +343,9 @@
 				wedTS = wedTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				 	"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -414,7 +422,9 @@
 				thuTS = thuTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				 	"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main'size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -491,7 +501,9 @@
 				friTS = friTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				 	"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -568,7 +580,9 @@
 				satTS = satTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
-				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & " onKeyUp=""javascript:return maskMe(this.value,this,'2,5','/');""></td>" & _
+				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
+					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
+					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 				 	"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' maxlength='11' readonly name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
@@ -658,6 +672,56 @@
 		}
 		function reqfld() {
 			<%=strjs%>
+		}
+		// Validates that the input string is a valid date formatted as "mm/dd/yyyy"
+		function isValidDate(dateString) { 
+		    // First check for the pattern
+		    if(!/^\d{1,2}\/\d{1,2}\/\d{2,4}$/.test(dateString))
+		        return false;
+
+		    // Parse the date parts to integers
+		    var parts = dateString.split("/");
+		    var day = parseInt(parts[1], 10);
+		    var month = parseInt(parts[0], 10);
+		    var year = parseInt(parts[2], 10);
+
+		    if (year < 100 || year > 0) {
+		    	year = 2000 + year;
+		    }
+		    // Check the ranges of month and year
+		    if( year < 1000 || year > 3000 || month == 0 || month > 12)
+		        return false;
+
+		    var monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+		    // Adjust for leap years
+		    if(year % 400 == 0 || (year % 100 != 0 && year % 4 == 0))
+		        monthLength[1] = 29;
+
+		    // Check the range of the day
+		    var allok = day > 0 && day <= monthLength[month - 1];
+		    if (allok) {
+		    	return month + "/" + day + "/" + year;
+		    } else {
+		    	return false;
+		    }
+		}
+		function maskDate(str,textbox,loc,delim) {
+			var v = str;
+        	if (v.match(/^\d{2}$/) !== null) {
+            	textbox.value = v + '/';
+        	} else if (v.match(/^\d{2}\/\d{2}$/) !== null) {
+	            textbox.value = v + '/';
+        	}
+        }
+        function checkDate(str,textbox,loc,delim) {
+			dateok = isValidDate(str);
+			if(dateok == false) {
+				textbox.value = '';
+				textbox.placeholder="mm/dd/yyyy";
+			} else {
+				textbox.value = dateok;
+			}
 		}
 		function maskMe(str,textbox,loc,delim)
 		{
