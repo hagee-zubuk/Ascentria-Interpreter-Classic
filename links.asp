@@ -13,8 +13,7 @@
 		<link href="CalendarControl.css" type="text/css" rel="stylesheet">
 		<script src="CalendarControl.js" language="javascript"></script>
 		<link href='style.css' type='text/css' rel='stylesheet'>
-		<script language='JavaScript'>
-		<!--
+		<script language='JavaScript'>		<!--
 		//-->
 		</script>
 <style>
@@ -65,6 +64,7 @@
 	<p><a class="Admin" href="http://www.courts.state.nh.us/supreme/orders/12-24-13-order-appendix-b.pdf" target="_blank">NHJB Code of Professional Responsibility for Interpreters</a></p>
 	<p><a class="Admin" href="http://lssne.training.reliaslearning.com/lib/Authenticate.aspx?ReturnUrl=%2f" target="_blank">Relias Learning /Training</a></p>
 	<p><a class="Admin" href="https://ew42.ultipro.com/Login.aspx?ReturnUrl=%2fdefault.aspx  " target="_blank">UltiPro</a></p>
+	<p><a class="Admin" href="umass_encounter_form.2018.pdf" target="_blank">UMASS Enconter Form</a></p>
 										</div>
 									</div>
 									</td>

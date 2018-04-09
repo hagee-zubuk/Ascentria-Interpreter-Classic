@@ -6,6 +6,7 @@
 <%
 Set theDoc = Server.CreateObject("ABCpdf9.Doc") 'converts html to pdf
 Set theDoc2 = Server.CreateObject("ABCpdf9.Doc")
+Set theDoc3 = Server.CreateObject("ABCpdf9.Doc")
 
 fname = "VerificationForm" & Request("ReqID") & "UM.pdf"
 attachPDF = pdfStr & fname
@@ -19,6 +20,8 @@ theID = theDoc.AddImageUrl(strUrl)
 'theDoc.Page = theDoc.AddPage()
 theDoc2.Read(DirectionPath & "Instructions for Interpreters at UMass pdf version 10.10.17.pdf")
 theDoc.Append(theDoc2)
+theDoc3.Read(DirectionPath & "umass_encounter_form.2018.pdf")
+theDoc.Append(theDoc3)
 
 For i = 1 To theDoc.PageCount
   theDoc.PageNumber = i

@@ -101,7 +101,7 @@ End Function
 
 Function zLogMailMessage(lngerr, strto, subject, smtp, body, cc)
 	Set rsLog = Server.CreateObject("ADODB.RecordSet")
-	rsLog.Open "[log_email]", z_SMTP_CONN, 1, 3
+	rsLog.Open "SELECT TOP 1 * FROM [log_email]", z_SMTP_CONN, 1, 3
 	rsLog.AddNew
 On Error Resume Next
 	rsLog("err") = lngerr
@@ -120,7 +120,7 @@ End Function
 
 Function zLogMailMessageRem(lngerr, strto, subject, smtp, body, cc, remk)
 	Set rsLog = Server.CreateObject("ADODB.RecordSet")
-	rsLog.Open "[log_email]", z_SMTP_CONN, 1, 3
+	rsLog.Open "SELECT TOP 1 * FROM [log_email]", z_SMTP_CONN, 1, 3
 	rsLog.AddNew
 On Error Resume Next
 	rsLog("err") = lngerr
