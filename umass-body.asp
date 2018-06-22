@@ -83,15 +83,12 @@ Report to:
 	</tbody>
 </table>
 <h1>=&nbsp;=&nbsp;=&nbsp;&nbsp;DO NOT PRINT&nbsp;&nbsp;=&nbsp;=&nbsp;=</h1>
-<p>You are expected to use the UMass Memorial Medical Center Encounter Form, which you should pick up at the hospital (see below).</p>
+<p>You are expected to use the UMass Memorial Medical Center Encounter Form, which you should find attached (see below). You can also pick these up at the hospital.</p>
 <p>WHEN YOU ARE ON-SITE: Call UMass Interpreter Services Dispatching at 508-334-7651 or 774-441-
 6793 or, from any hospital phone, Extension 1-6793</p>
-<p><a style="color: #222;" href="https://interpreter.thelanguagebank.org/interpreter/Instructions for Interpreters at UMass pdf version 10.10.17.pdf">
-	Instructions for using the</a>
-	<a style="color: #222;" href="https://interpreter.thelanguagebank.org/interpreter/umass_encounter_form.2018.pdf">
+<p>Instructions for using the attached <a style="color: #222;" href="https://interpreter.thelanguagebank.org/interpreter/umass_encounter_form.2018.pdf">
 	UMass Verification/Encounter Form</a>
-	<a style="color: #222;" href="https://interpreter.thelanguagebank.org/interpreter/Instructions for Interpreters at UMass pdf version 10.10.17.pdf">
-	follow</a>.</p>
+	follow.</p>
 </div>
 	</body>
 </html>
