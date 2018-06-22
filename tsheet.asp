@@ -93,7 +93,7 @@
 				canbill = "DISABLED"
 				myStat2 = "READONLY"
 			end If
-			If rsTS("appDate") = cdate(sundate) Then
+			If rsTS("appDate") = CDate(sundate) Then
 				If cdate(rsTS("appdate")) < cdate("2/21/2016") Then
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " '><option value='5' " & no5 & ">Appointment prior to 2/21/2016</option></select>"
 				ElseIf rsTS("InstID") = 479 Then '479 2446
@@ -104,7 +104,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				sunTS = sunTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 					"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 					"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -117,7 +117,7 @@
 					"<td align='center'><input type='checkbox' disabled " &  tmpConToll & "></td>" & _
 					"<td align='center'><a href='#' onclick='uploadform(" & rsTS("index") & ");'><img src='images/upload.png' border='0' title='upload forms'></a>"  & _
 					"</tr>"
-				if rsTS("status") <> 4 and lbcon = "" Then
+				If rsTS("status") <> 4 and lbcon = "" Then
 					If rsTS("deptID") = 2246 Then
 						strjs = strjs & "document.frmTS.sunstart" & ctr & ".readOnly = true;" & vbcrlf & _
 							"document.frmTS.sunend" & ctr & ".readOnly = true;" & vbcrlf
@@ -183,7 +183,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				monTS = monTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+					"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				  "<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				  "<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -262,7 +262,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				tueTS = tueTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name=""sunq1" & ctr & """ id=""sunq1" & ctr & """ " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -341,7 +341,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				wedTS = wedTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -420,7 +420,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				thuTS = thuTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -499,7 +499,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				friTS = friTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
@@ -578,7 +578,7 @@
 					nooption = "<select class='seltxt' style='width: 200px;' name='noreasq" & ctr & "' " & LBcon & canbill & " onchange='reqfld2();'><option value='0' " & no0 & ">&nbsp;</option><option value='1' " & no1 & ">Client did not show for the appointment</option><option value='2' " & no2 & ">Provider canceled appointment when interpreter arrived</option><option value='3' " & no3 & ">Provider had me interpret for another client not listed on vform</option><option value='7' " & no7 & ">Patient refused interpreter service</option><option value='8' " & no8 & ">No phone number provider on vform</option></select>"
 				End If
 				satTS = satTS & "<tr bgcolor='#F5F5F5'><td><input type='hidden' name='ctr" & ctr & "' value='" & rsTS("index") & "'></td><td align='center'><nobr>" & myAct & "</td>" & _
-				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
+				 	"<td align='center'><input type='hidden' name='hid_sunq1" & ctr & "' id='hid_sunq1" & ctr & "' value='" & hid_q & "'><select class='seltxt' style='width: 50px;' name='sunq1" & ctr & "' id='sunq1" & ctr & "' " & LBcon & canbill & " onchange='reqfld();'><option value='0' " & q0 & ">&nbsp;</option><option value='1' " & q1 & ">NO</option><option value='2' " & q2 & ">YES</option></select></td>" & _
 				 	"<td align='center'><input type='hidden' name='hid_noreas" & ctr & "' value='" & hid_noreas & "'>" & nooption & _
 				 	"<br>Date:<input class='main' size='11' maxlength='10' name='DSnoreas" & ctr & "' value='" & DSnoreas & "' " & LBcon & _
 					" onkeyup=""javascript:return maskDate(this.value,this,'2,5','/');""" & _
