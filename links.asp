@@ -5,7 +5,15 @@
 <!-- #include file="_Security.asp" -->
 <!-- #include file="_UtilsReport.asp" -->
 <%
-<!-- #include file="_closeSQL.asp" -->
+Set rsSurv = Server.CreateObject("ADODB.Recordset")
+strSQL = "SELECT [release] FROM [surveyreports] WHERE [iid]=" & Session("UIntr")
+rsSurv.Open strSQL, g_strCONN, 3, 1
+blnRelease = FALSE
+If Not rsSurv.EOF Then
+	blnRelease = CBool( rsSurv("release") )
+End If
+rsSurv.Close
+
 %>
 <html>
 	<head>
@@ -50,6 +58,13 @@
 									<div style="margin-left: 50px;">
 									<h1>TRAININGS AND LINKS</h1>
 										<div style="margin-left: 20px;" class="trainings">
+<%
+If blnRelease Then
+%>
+	<div style="padding: 4px 10px; background-color: pink; width: 200px; font-weight: bold; text-align: center;"><a class="Admin" href="survey.report.asp" target="_blank">Interpreter Survey Report</a></div>
+<%
+End If
+%>
 	<p><a class="Admin" href="http://intranet.ascentria.org/default.aspx" target="_blank">Ascentria Intranet</a></p>
 	<p><a class="Admin" href="https://securefile.ascentria.org/filedrop/LBInterpreterInfo" target="_blank">Ascentria Secure File Transfer</a><br />
 		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;** Please use this link to upload your credentials
