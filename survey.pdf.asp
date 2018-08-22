@@ -47,7 +47,7 @@ If Not rsSurv.EOF Then
 End If
 rsSurv.Close
 
-blnRelease = True
+'blnRelease = True
 If Not blnRelease Then
 	Response.Redirect "survey.v18.asp"
 End If
@@ -55,21 +55,31 @@ End If
 'On Error Resume Next
 'Set rsSurv = Server.CreateObject("ADODB.RecordSet")
 Set theDoc = Server.CreateObject("ABCpdf9.Doc")
-theDoc.HtmlOptions.PageCacheClear
+thedoc.HtmlOptions.PageCacheClear
 theDoc.HtmlOptions.RetryCount = 3
 theDoc.HtmlOptions.Timeout = 120000
 theDoc.Pos.X = 10
 theDoc.Pos.Y = 10
-theID = theDoc.AddImageUrl(strUrl)
-For i = 1 To theDoc.PageCount
-	theDoc.PageNumber = i
-	theDoc.Flatten
+theDoc.Rect.Inset 50, 50
+theDoc.Page = theDoc.AddPage()
+
+theID = theDoc.AddImageUrl(strUrl, True, 1200, True)
+
+Do
+  theDoc.Framerect
+  If Not theDoc.Chainable(theID) Then Exit Do
+  theDoc.Page = theDoc.AddPage()
+  theID = theDoc.AddImageToChain(theID)
+Loop
+
+For i = 1 to theDoc.PageCount
+     theDoc.PageNumber = i
+     theDoc.Flatten
 Next
 
-theDoc.Save strPDF	
 'If Err.Number <> 0 Then
 	Err.Clear
-	strSQL = "SELECT [release] FROM [surveyreports] WHERE [iid]=" & lngID
+	strSQL = "SELECT [release], [viewed] FROM [surveyreports] WHERE [iid]=" & lngID
 	rsSurv.Open strSQL, g_strCONN, 1, 3
 	If Not rsSurv.EOF Then
 		rsSurv("viewed") = Now
@@ -77,39 +87,38 @@ theDoc.Save strPDF
 	End If
 	rsSurv.Close
 
-	If fso.FileExists(strPDF) Then
-		Set objFile = fso.GetFile(strPDF)
-		intFSz = objFile.Size
-		Set objFile = Nothing
-'Response.Write "<h1>ready</h1><p>to download</p>"
-'Response.End
-		Response.Clear
-		'Response.Status = "206 Partial Content"
-		Response.Addheader "Content-Disposition", "attachment; filename=""InSurvey.pdf"""
-		Response.Addheader "Content-Length", intFSz 
-		Response.Addheader "Accept-Ranges", "bytes"
-		Response.Addheader "Content-Transfer-Encoding", "binary"
-		Response.ExpiresAbsolute = #January 1, 2001 01:00:00#
-		Response.CacheControl = "Private"
-		Response.ContentType = "application/pdf"
+'theDoc.Save "C:\work\apr_pdf\zz.pdf"
+theData = theDoc.GetData() 
 
-		Set BinaryStream = CreateObject("ADODB.Stream")
-		BinaryStream.Type = 1
-		BinaryStream.Open
-		BinaryStream.LoadFromFile strPDF
-		binCont = BinaryStream.Read
-		BinaryStream.Close
-		Response.BinaryWrite binCont
-		Response.Flush()
-		Set BinaryStream = Nothing
-	Else
-		Err.Clear
-		Response.Clear
-		'Response.Write "woah!"		
-		Response.Status = "404 File Not Found"
-	End If
-'End If
-Set rsSurv = Nothing
+theDoc.Save strPDF
+theDoc.Clear
+Response.Addheader "Content-Disposition", "attachment; filename=""InSurvey.pdf"""
+Response.AddHeader "content-length", UBound(theData) - LBound(theData) + 1 
+Response.Addheader "Content-Transfer-Encoding", "binary"
+Response.ExpiresAbsolute = #January 1, 2001 01:00:00#
+Response.CacheControl = "Private"
+Response.ContentType = "application/pdf"
+
+Response.BinaryWrite theData
+Response.Flush
+Response.End
+
+
+''		Response.Clear
+''		'Response.Status = "206 Partial Content"
+''		Response.Addheader "Content-Disposition", "attachment; filename=""InSurvey.pdf"""
+''		Response.Addheader "Content-Length", intFSz 
+''		Response.Addheader "Accept-Ranges", "bytes"
+''
+''		Set BinaryStream = CreateObject("ADODB.Stream")
+''		BinaryStream.Type = 1
+''		BinaryStream.Open
+''		BinaryStream.LoadFromFile strPDF
+''		binCont = BinaryStream.Read
+''		BinaryStream.Close
+''		Response.BinaryWrite binCont
+''		Response.Flush()
+''		Set BinaryStream = Nothing
 
 'Response.End
 %>

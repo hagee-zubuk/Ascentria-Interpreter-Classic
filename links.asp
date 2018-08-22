@@ -61,7 +61,7 @@ rsSurv.Close
 <%
 If blnRelease Then
 %>
-	<div style="padding: 4px 10px; background-color: pink; width: 200px; font-weight: bold; text-align: center;"><a class="Admin" href="survey.report.asp" target="_blank">Interpreter Survey Report</a></div>
+	<div style="padding: 4px 10px; background-color: pink; width: 200px; font-weight: bold; text-align: center;"><a class="Admin" href="survey.results.asp" target="_blank">Interpreter Survey Report</a></div>
 <%
 End If
 %>
