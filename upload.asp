@@ -1,6 +1,6 @@
 <%language=vbscript%>
 <!-- #include file="_Files.asp" -->
-<!-- #include file="_Announce.asp" -->
+<!-- in file="_Announce.asp" -->
 <!-- #include file="_Utils.asp" -->
 <%
 Function Z_MakeUniqueFileName()
@@ -11,71 +11,71 @@ Function Z_MakeUniqueFileName()
 End Function
 uploaderror = 0
 If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
-		Set oUpload = Server.CreateObject("SCUpload.Upload")
-		oUpload.Upload
-		If oUpload.Files.Count = 0 Then
-			Set oUpload = Nothing
-			Session("MSG") = "Please specify a file to import."
-			Response.Redirect "upload.asp"
-		End If
-		appID = oUpload.Form("reqID")
-		'create folder
-		folderpath = uploadpath & appID
-		folderpathvform = uploadpath & appID & "\vform"
-		folderpathtoll = uploadpath & appID & "\tolls"
-		Set fso = Server.CreateObject("Scripting.FileSystemObject")
-		If Not fso.FolderExists(folderpath) Then fso.CreateFolder(folderpath)
-		If Not fso.FolderExists(folderpathvform) Then fso.CreateFolder(folderpathvform)
-		If Not fso.FolderExists(folderpathtoll) Then fso.CreateFolder(folderpathtoll)
-		Set fso = Nothing
-		ctr = 1
-		Do Until ctr = 3
-			If ctr = 1 Then upfile = "Verification Form"
-			If ctr = 2 Then upfile = "Tolls and Parking Receipts"
-			oFileName = oUpload.Files(ctr).Item(1).filename
-			If oFileName <> "" Then
-				If Ucase(Z_GetExt(oFileName)) <> "PDF" Then
-					Session("MSG") = Session("MSG") & "<br>" & upfile & " is invalid."
-					uploaderror = 1
-				End If
-				oFileSize = oUpload.Files(ctr).Item(1).Size
-				If oFileSize > 3000000 Then
-					Session("MSG") = Session("MSG") & "<br>" & upfile & " is too large."
-					uploaderror = 1
-				End If
-			Else
+	Set oUpload = Server.CreateObject("SCUpload.Upload")
+	oUpload.Upload
+	If oUpload.Files.Count = 0 Then
+		Set oUpload = Nothing
+		Session("MSG") = "Please specify a file to import."
+		Response.Redirect "upload.asp"
+	End If
+	appID = oUpload.Form("reqID")
+	'create folder
+	folderpath = uploadpath & appID
+	folderpathvform = uploadpath & appID & "\vform"
+	folderpathtoll = uploadpath & appID & "\tolls"
+	Set fso = Server.CreateObject("Scripting.FileSystemObject")
+	If Not fso.FolderExists(folderpath) Then fso.CreateFolder(folderpath)
+	If Not fso.FolderExists(folderpathvform) Then fso.CreateFolder(folderpathvform)
+	If Not fso.FolderExists(folderpathtoll) Then fso.CreateFolder(folderpathtoll)
+	Set fso = Nothing
+	ctr = 1
+	Do Until ctr = 3
+		If ctr = 1 Then upfile = "Verification Form"
+		If ctr = 2 Then upfile = "Tolls and Parking Receipts"
+		oFileName = oUpload.Files(ctr).Item(1).filename
+		If oFileName <> "" Then
+			If Ucase(Z_GetExt(oFileName)) <> "PDF" Then
+				Session("MSG") = Session("MSG") & "<br>" & upfile & " is invalid."
 				uploaderror = 1
 			End If
-			If uploaderror = 0 Then
-				'save file
-				UniqueFilename = Z_MakeUniqueFileName()
-				If ctr = 1 Then 
-					nFileName = "vform" & UniqueFilename & ".PDF"
-					oUpload.Files(ctr).Item(1).Save folderpathvform, nFileName
-				ElseIf ctr = 2 Then 
-					nFileName = "tollsandpark" & UniqueFilename & ".PDF"
-					oUpload.Files(ctr).Item(1).Save folderpathtoll, nFileName
-				End If
-				Session("MSG") = "File Saved."
-				'save in DB
-				Set rsUpload = Server.CreateObject("ADODB.RecordSet")
-				rsUpload.Open "SELECT * FROM uploads WHERE timestamp = '" & Now & "'", g_strCONNupload, 1, 3
-				rsUpload.AddNew
-				rsUpload("RID") = appID
-				rsUpload("filename") = nFileName
-				rsUpload("timestamp") = Now
-				rsUpload("type") = False
-				If ctr = 2 Then rsUpload("type") = True
-				rsUpload.Update
-				rsUpload.Close
-				Set rsUpload = Nothing
+			oFileSize = oUpload.Files(ctr).Item(1).Size
+			If oFileSize > 9000000 Then
+				Session("MSG") = Session("MSG") & "<br>" & upfile & " is too large."
+				uploaderror = 1
 			End If
-			ctr = ctr + 1
-		Loop
-		Set oUpload = Nothing
-	Else
-		appID = Request("ReqID")
-	End If
+		Else
+			uploaderror = 1
+		End If
+		If uploaderror = 0 Then
+			'save file
+			UniqueFilename = Z_MakeUniqueFileName()
+			If ctr = 1 Then 
+				nFileName = "vform" & UniqueFilename & ".PDF"
+				oUpload.Files(ctr).Item(1).Save folderpathvform, nFileName
+			ElseIf ctr = 2 Then 
+				nFileName = "tollsandpark" & UniqueFilename & ".PDF"
+				oUpload.Files(ctr).Item(1).Save folderpathtoll, nFileName
+			End If
+			Session("MSG") = "File Saved."
+			'save in DB
+			Set rsUpload = Server.CreateObject("ADODB.RecordSet")
+			rsUpload.Open "SELECT * FROM uploads WHERE timestamp = '" & Now & "'", g_strCONNupload, 1, 3
+			rsUpload.AddNew
+			rsUpload("RID") = appID
+			rsUpload("filename") = nFileName
+			rsUpload("timestamp") = Now
+			rsUpload("type") = False
+			If ctr = 2 Then rsUpload("type") = True
+			rsUpload.Update
+			rsUpload.Close
+			Set rsUpload = Nothing
+		End If
+		ctr = ctr + 1
+	Loop
+	Set oUpload = Nothing
+Else
+	appID = Request("ReqID")
+End If
 %>
 <html>
 	<head>
@@ -137,7 +137,7 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 						
 						<span class='formatsmall' onmouseover="this.className='formatbig'" onmouseout="this.className='formatsmall'">*PDF format only</span><br>
 						
-						<span class='formatsmall' onmouseover="this.className='formatbig'" onmouseout="this.className='formatsmall'">*1 MB limit per file</span><br>
+						<span class='formatsmall' onmouseover="this.className='formatbig'" onmouseout="this.className='formatsmall'">*5 MB limit per file</span><br>
 						
 						<span class='formatsmall' onmouseover="this.className='formatbig'" onmouseout="this.className='formatsmall'">*You can upload more than once, it will not overwrite the previous upload</span>
 					</td>
