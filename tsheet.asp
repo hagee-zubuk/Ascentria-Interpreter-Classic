@@ -27,6 +27,9 @@
 		sundate = GetSun(Request("tmpDate"))
 		satdate = GetSat(Request("tmpDate"))
 	End If
+	
+	Response.Cookies("tmpDate") = Request("tmpDate")
+
 	Set rsTS = Server.CreateObject("ADODB.RecordSet")
 	sqlTS = "SELECT InstID, noreas, DSnoreas, status, happen, overpayhrs, payhrs, LBconfirm, [index], totalhrs, Status, confirmed, InstID, Cfname, Clname, AStarttime, AEndtime, totalhrs, actTT, appDate, toll, " & _
 		"LbconfirmToll, deptID FROM request_T WHERE appDate >= '" & sundate & "' AND appDate <= '" & satDate & "' AND IntrID = " & Session("UIntr") & " " & _
@@ -664,8 +667,10 @@
 		<!--
 		function uploadform(xxx)
 		{
-			newwindow = window.open('upload.asp?reqid=' + xxx,'name','height=175,width=400,scrollbars=0,directories=0,status=0,toolbar=0,resizable=0');
+			/*newwindow = window.open('upload.asp?reqid=' + xxx,'name','height=175,width=400,scrollbars=0,directories=0,status=0,toolbar=0,resizable=0');
 			if (window.focus) {newwindow.focus()}
+				*/
+			window.location = "viewuploads.asp?reqid=" + xxx;
 		}
 		function reqfld2() {
 			<%=strjs2%>
