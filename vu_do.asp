@@ -61,5 +61,5 @@ Else
 	Set rsUpload = Nothing
 End If
 
-'Response.Redirect "viewuploads.asp?reqid=" & lngRID
+Response.Redirect "viewuploads.asp?reqid=" & lngRID
 %>

@@ -11,7 +11,7 @@ If rsUploads.EOF Then
 	rsUploads.Close
 	Set rsUploads = Nothing
 	Response.Write "<h1>Oops</h1><p>Unable to find the file, or access is denied accessing the file.</p>"	
-	Response.Write strSQL
+	'Response.Write strSQL
 	Response.End
 End If
 
@@ -66,7 +66,7 @@ On Error Resume Next
 	Set oFileStream= Nothing
 Else
 	Response.Write "<h1>Oops</h1><p>Unable to find the file, or access is denied accessing the file.</p>"
-	Response.Write viewpath
+	'Response.Write viewpath
 End If
 Set fso = Nothing
 %>
