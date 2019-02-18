@@ -183,7 +183,8 @@ End If
 
 <input type="submit" class="btn" name="btnUpld" id="btnUpld" value="Upload File" />
 &nbsp;&nbsp;&nbsp;
-<input type="button" class="btn" name="btnDn" id="btnDn" value="Back" />
+<%= strCloseButton %>
+<!-- input type="button" class="btn" name="btnDn" id="btnDn" value="Back" /* -->
 
 </div>
 </form>
