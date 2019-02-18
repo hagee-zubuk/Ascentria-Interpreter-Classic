@@ -13,9 +13,20 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 End If
 'get open appt
 Set rsApp = Server.CreateObject("ADODB.RecordSet")
-sqlApp = "SELECT appID, appdate, langID, deptID, appTimeFrom, appTimeTo, CliAdd, ccity, accept FROM appt_T, request_T WHERE appt_T.IntrID = " & _
-	Session("UIntr") & " AND appt_T.[appID] = request_T.[index] AND [status] <> 3 AND NOT request_T.intrID > 0 " & _
-	"AND appDate >= '" & frmDte & "' AND appdate <= '" & toDte & "' ORDER BY [accept], appDate"
+'sqlApp = "SELECT appID, appdate, langID, deptID, appTimeFrom, appTimeTo, CliAdd, ccity, cstate, state, accept FROM appt_T, request_T WHERE appt_T.IntrID = " & _
+'	Session("UIntr") & " AND appt_T.[appID] = request_T.[index] AND [status] <> 3 AND NOT request_T.intrID > 0 " & _
+'	"AND appDate >= '" & frmDte & "' AND appdate <= '" & toDte & "' ORDER BY [accept], appDate"
+sqlApp = "SELECT req.[intrID], app.[IntrID], CliAdd, [ccity], [cstate]" & _
+		", dep.[city], dep.[state], appID, appdate, langID, deptID, appTimeFrom, appTimeTo, [accept] " & _
+		"FROM [appt_T] AS app " & _
+		"INNER JOIN [request_T] AS req ON app.[appID]=req.[index] " & _
+		"INNER JOIN [dept_T] AS dep ON req.[deptid]=dep.[index] " & _
+		"WHERE [status] <> 3 " & _
+		"AND req.[intrID] <= 0 " & _
+		"AND appDate >= '" & frmDte & "' " & _
+		"AND appdate <= '" & toDte & "' " & _
+		"AND app.[IntrID] =" & Session("UIntr") & _
+		" ORDER BY [accept], [appDate]"	
 rsApp.Open sqlApp, g_strCONN, 3, 1
 x = 0
 Do Until rsApp.EOF
@@ -27,9 +38,11 @@ Do Until rsApp.EOF
 	appdate = rsApp("appdate")
 	myclass = GetClass(Z_GetClass(rsApp("deptID")))
 	timeframe = Z_FormatTime(rsApp("apptimeFrom"), 4) & " - " & Z_FormatTime(rsApp("appTimeTo"), 4)
-	tmpcity = GetCity(rsApp("deptID"))
-	If rsApp("CliAdd") Then tmpcity = rsApp("ccity")
-	
+	If rsApp("CliAdd") Then
+		tmpcity = rsApp("ccity") & ", " & rsApp("cstate")
+	Else
+		tmpcity = rsApp("city") & ", " & rsApp("state")
+	End If
 	
 	noans = ""
 	ansyes = ""
@@ -68,7 +81,7 @@ Set rsApp = Nothing
 %>
 <html>
 	<head>
-		<title>Language Bank - Open Appointments</title>
+		<title>Language Bank - Open Appointments <%=Session("UIntr")%></title>
 		<link href="CalendarControl.css" type="text/css" rel="stylesheet">
 		<script src="CalendarControl.js" language="javascript"></script>
 		<link href='style.css' type='text/css' rel='stylesheet'>
@@ -217,9 +230,9 @@ Set rsApp = Nothing
 					</tr>
 				</table>
 			</form>
-			<code>
+			<!-- code>
 			<%=sqlApp%>
-			</code>
+			</code -->
 		</body>
 	</head>
 </html>

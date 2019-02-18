@@ -69,8 +69,7 @@ If Z_GetInfoFROMAppID(Request("ReqID"), "IntrID") = Session("UIntr") Then
 	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 323 And DeptID = 1924 Then 'wentworth
 		theDoc2.Read(DirectionPath & "DirWDH-CNS.pdf")
 		theDoc.Append(theDoc2) 
-	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 860 Then ' UMass
-		' You should not be here anymore!!!
+	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 860 Then 'umass
 		theDoc2.Read(DirectionPath & "READ ME FIRST.pdf")
 		theDoc.Append(theDoc2)
 		theDoc3.Read(DirectionPath & "Interpreters guidelines.pdf")

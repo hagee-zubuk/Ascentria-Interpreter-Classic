@@ -5,26 +5,26 @@
 <!-- #include file="_Security.asp" -->
 <!-- #include file="_UtilsReport.asp" -->
 <%
+Function GetDeptZip(xxx)
+	Set rsDept = Server.CreateObject("ADODB.RecordSet")
+	sqlDept = "SELECT * FROM dept_T WHERE [index] = " & xxx
+	rsDept.Open sqlDept, g_strCONN, 3, 1
+	If Not rsDept.EOF Then
+		GetDeptZip = rsDept("zip")
+	End If
+	rsDept.Close
+	Set rsDept = Nothing 
+End Function
 
-	Function GetDeptZip(xxx)
-		Set rsDept = Server.CreateObject("ADODB.RecordSet")
-		sqlDept = "SELECT * FROM dept_T WHERE [index] = " & xxx
-		rsDept.Open sqlDept, g_strCONN, 3, 1
-		If Not rsDept.EOF Then
-			GetDeptZip = rsDept("zip")
-		End If
-		rsDept.Close
-		Set rsDept = Nothing 
-	End Function
 	'get mileage cap for interpreters
-	set rsmile = server.createobject("adodb.recordset")
+	Set rsmile = server.createobject("adodb.recordset")
 	sqlmile = "select * from travel_t"
 	rsmile.open sqlmile, g_strconn, 3, 1
-	if not rsmile.eof then
+	If Not rsmile.eof Then
 		tmpmilecap = Z_czero(rsmile("milediff"))
-	end if
+	End If
 	rsmile.close
-	set rsmile = nothing
+	Set rsmile = nothing
 	'GET ADDRESS AND ZIP of Intrpreter
 	Set rsIntr = Server.CreateObject("ADODB.REcordSet")
 	sqlIntr = "SELECT * FROM Interpreter_T WHERE [index] = " & Request("IntrID")
@@ -56,77 +56,73 @@
 	<head>
 		<title>Payable Travel Time/Mileage</title>
 		<link href='style.css' type='text/css' rel='stylesheet'>
-		<script language='JavaScript'>
-    	var origindef = "<%=tmpIntrAddG%>";
-			var desinationdef = "<%=tmpDeptaddrG%>";
-			var originzip = "<%=tmpIntrZip%>";
-			var desinationzip = "<%=tmpZipInstg%>";
-			function initMap() {
-			var service = new google.maps.DistanceMatrixService();
-			calculateDistances(service, origindef, desinationdef);	
-    	}
-			function  calculateDistances(directionsService, from, to) {
+	<script language='JavaScript'>
+var origindef = "<%=tmpIntrAddG%>";
+var desinationdef = "<%=tmpDeptaddrG%>";
+var originzip = "<%=tmpIntrZip%>";
+var desinationzip = "<%=tmpZipInstg%>";
+	function initMap() {
+		var service = new google.maps.DistanceMatrixService();
+		calculateDistances(service, origindef, desinationdef);	
+	}
+	function  calculateDistances(directionsService, from, to) {
         directionsService.getDistanceMatrix({
-          origins: [from],
-          destinations: [to],
-          travelMode: 'DRIVING',
-          unitSystem: google.maps.UnitSystem.METRIC,
-          avoidHighways: false,
-          avoidTolls: false
-        }, callback);
-      }
-     function callback(response, status) {
-			  var origins = response.originAddresses;
-			  var destinations = response.destinationAddresses;
-			  if (origins != '' && destinations != '') {
-			    for (var i = 0; i < origins.length; i++) {
-			      var results = response.rows[i].elements;
-			      for (var j = 0; j < results.length; j++) {
-			      	var element = results[j];
-			        var distance = element.distance.value;
-			        var duration = element.duration.value;
-			        getDistanceValues(distance, duration);
-			      }
-			    }
-			  }
-			  else {
-			  	alert('Error: One of the addresses is invalid. System used ZIP CODES to calculate Travel Time and Mileage');
-			  	var service = new google.maps.DistanceMatrixService();
-			  	calculateDistances(service, originzip, desinationzip);
-			  }
+			origins: [from],
+			destinations: [to],
+			travelMode: 'DRIVING',
+			unitSystem: google.maps.UnitSystem.METRIC,
+			avoidHighways: false,
+			avoidTolls: false
+        	}, callback);
+	}
+	function callback(response, status) {
+		var origins = response.originAddresses;
+		var destinations = response.destinationAddresses;
+		if (origins != '' && destinations != '') {
+			for (var i = 0; i < origins.length; i++) {
+	  			var results = response.rows[i].elements;
+	  			for (var j = 0; j < results.length; j++) {
+	  				var element = results[j];
+	    			var distance = element.distance.value;
+	    			var duration = element.duration.value;
+	    			getDistanceValues(distance, duration);
+	  			}
 			}
-		function getDistanceValues(dista, dura) {
-	      // Use this function to access information about the latest load()
-	      // results.
-				duree = dura;
-				dist = dista;
-				dureeHrs = ((duree) / 60) / 60;
-				distMile = dista / 1609.344;
-				//document.getElementById("ttM").innerHTML = (Math.round(dureeHrs * 100)/100) + " Hrs. - " + (Math.round(distMile*100)/100) + " Miles"; 
-	   		decHrs = dureeHrs;
-				decMile = distMile;
-	   		tmpRate = decMile / decHrs;
-	   		//alert(decHrs + "         " + decMile);
-	   		if (decMile > <%=tmpmilecap%>) //interpreter
-		  	{
-		  		bilMile = (decMile * 2) - (<%=tmpmilecap%> * 2); //billable mileage (2 way)
-					bilTravel = bilMile / tmpRate; //billable travel time (2 way)
-		   		document.frmMile.txtTravel.value = Math.round(bilTravel * 100)/100;
-			  	document.frmMile.txtMile.value = Math.round(bilMile * 100)/100;
-		  	}
-		  	else
-		  	{
-		  		document.frmMile.txtTravel.value = 0;
-		  		document.frmMile.txtMile.value = 0;
-		  	}
-		  	//alert(document.frmMile.txtTravel.value + "         " + document.frmMile.txtMile.value);
-		 	}
-		 	function SubmitMe()
-		 	{
-		 			//alert(document.frmMile.txtTravel.value + "    " + document.frmMile.txtMile.value);
-		 			document.frmMile.action = "emailIntr.asp"
-		 			document.frmMile.submit();	
-		 	}
+		} else {
+			alert('Error: One of the addresses is invalid. System used ZIP CODES to calculate Travel Time and Mileage');
+			var service = new google.maps.DistanceMatrixService();
+			calculateDistances(service, originzip, desinationzip);
+		}
+	}
+	function getDistanceValues(dista, dura) {
+		// Use this function to access information about the latest load()
+		// results.
+		duree = dura;
+		dist = dista;
+		dureeHrs = ((duree) / 60) / 60;
+		distMile = dista / 1609.344;
+		//document.getElementById("ttM").innerHTML = (Math.round(dureeHrs * 100)/100) + " Hrs. - " + (Math.round(distMile*100)/100) + " Miles"; 
+   		decHrs = dureeHrs;
+		decMile = distMile;
+   		tmpRate = decMile / decHrs;
+   		//alert(decHrs + "         " + decMile);
+   		if (decMile > <%=tmpmilecap%>) //interpreter
+	  	{
+	  		bilMile = (decMile * 2) - (<%=tmpmilecap%> * 2); //billable mileage (2 way)
+			bilTravel = bilMile / tmpRate; //billable travel time (2 way)
+	   		document.frmMile.txtTravel.value = Math.round(bilTravel * 100)/100;
+		  	document.frmMile.txtMile.value = Math.round(bilMile * 100)/100;
+	  	} else {
+	  		document.frmMile.txtTravel.value = 0;
+	  		document.frmMile.txtMile.value = 0;
+	  	}
+	  	//alert(document.frmMile.txtTravel.value + "         " + document.frmMile.txtMile.value);
+	}
+	function SubmitMe() {
+		//alert(document.frmMile.txtTravel.value + "    " + document.frmMile.txtMile.value);
+	 	document.frmMile.action = "emailIntr.asp"
+	 	document.frmMile.submit();	
+	}
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=<%=googlemapskey%>" type="text/javascript"></script>
 	</head>

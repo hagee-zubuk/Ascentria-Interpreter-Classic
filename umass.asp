@@ -4,7 +4,7 @@
 <!-- #include file="_Utils.asp" -->
 <!-- #include file="_UtilsReport.asp" -->
 <%
-Set theDoc = Server.CreateObject("ABCpdf9.Doc") 'converts html to pdf
+Set theDoc = Server.CreateObject("ABCpdf6.Doc") 'converts html to pdf
 
 fname = "VerificationForm" & Request("ReqID") & "UM.pdf"
 attachPDF = pdfStr & fname
@@ -16,10 +16,10 @@ theDoc.Pos.X = 10
 theDoc.Pos.Y = 10
 theID = theDoc.AddImageUrl(strUrl)
 'theDoc.Page = theDoc.AddPage()
-Set theDoc2 = Server.CreateObject("ABCpdf9.Doc")
+Set theDoc2 = Server.CreateObject("ABCpdf6.Doc")
 theDoc2.Read(DirectionPath & "umass_instructions.pdf")
 theDoc.Append(theDoc2)
-Set theDoc3 = Server.CreateObject("ABCpdf9.Doc")
+Set theDoc3 = Server.CreateObject("ABCpdf6.Doc")
 theDoc3.Read(DirectionPath & "umass_encounter_form.2018.pdf")
 theDoc.Append(theDoc3)
 

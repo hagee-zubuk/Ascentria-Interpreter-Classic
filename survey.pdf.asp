@@ -54,7 +54,7 @@ End If
 
 'On Error Resume Next
 'Set rsSurv = Server.CreateObject("ADODB.RecordSet")
-Set theDoc = Server.CreateObject("ABCpdf9.Doc")
+Set theDoc = Server.CreateObject("ABCpdf6.Doc")
 thedoc.HtmlOptions.PageCacheClear
 theDoc.HtmlOptions.RetryCount = 3
 theDoc.HtmlOptions.Timeout = 120000

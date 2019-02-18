@@ -9,7 +9,7 @@ lngUID = Z_CLng(Request("uid"))
 tmDate = Request.Cookies("tmpDate")
 ' blah
 Set rsTS = Server.CreateObject("ADODB.RecordSet")
-sqlTS = "SELECT req.[index], xrs.[statusname], Cfname, Clname, req.[AStarttime], req.[AEndtime]" & _
+sqlTS = "SELECT req.[index], xrs.[statusname], Cfname, Clname, req.[apptimefrom], req.[apptimeto]" & _
 		", ins.[Facility], dep.[dept], req.[appDate] " & _
 		"FROM [request_T] AS req " & _
 		"INNER JOIN [xrStatus] AS xrs ON req.[Status]=xrs.[index] " & _
@@ -130,21 +130,19 @@ div.filelist {
 <table class="reqinfo">
 	<thead></thead>
 	<tbody>
-		<tr><td>Request #:</td><td><%= rsTS("index")%>
+		<tr><td>Request&nbsp;#:</td><td><%= rsTS("index")%>
 				<input type="hidden" name="reqid" id="reqid" value="<%= rsTS("index")%>" readonly="readonly" />
 					&nbsp;&nbsp;&nbsp;&nbsp;
 					[<%= rsTS("statusname")%>]
 					</td>
 
-		<tr><td>Date:</td><td><%= rsTS("appdate")%>, <%= FormatDateTime(rsTS("AStarttime"), 4) %> to <%= FormatDateTime(rsTS("AEndtime"), 4) %>
+		<tr><td>Date:</td><td><%= rsTS("appdate")%>, <%= FormatDateTime(rsTS("apptimefrom"), 4) %> to <%= FormatDateTime(rsTS("apptimeto"), 4) %>
 				</td></tr>
 		<tr><td>Activity:</td><td><b>
 				<%= rsTS("Facility")%>
-				<br />
-				<%= rsTS("Dept")%>
 				</b></td></tr>		
 		<tr><td>Client:</td><td>
-				<%= rsTS("cfname")%>&nbsp;&nbsp;<%= rsTS("clname")%></td></tr>
+				<%= rsTS("cfname")%>&nbsp;</td></tr>
 	</tbody>
 </table>
 <%
