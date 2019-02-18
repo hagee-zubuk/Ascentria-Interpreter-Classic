@@ -67,8 +67,8 @@
 			IntrCon = ""
 			If rsTS("confirmed") <> "" Then IntrCon = "disabled checked"
 			myAct = rsTS("index") & " - " & GetInst(rsTS("InstID")) & " - " & left(rsTS("Cfname"), 1) & ". " & left(rsTS("Clname"), 1) & "."
-			AStime = Z_FormatTime(CTime(rsTS("AStarttime")))
-			AEtime = Z_FormatTime(CTime(rsTS("AEndtime")) )
+			AStime = Z_FormatTime(Ctime(rsTS("AStarttime")))
+			AEtime = Z_FormatTime(Ctime(rsTS("AEndtime")))
 			q0 = ""
 			q1 = ""
 			q2 = ""
@@ -114,7 +114,7 @@
 					" onchange=""javascript:return checkDate(this.value,this,'2,5','/');""></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunstart" & ctr & "' value='" & AStime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
 					"<td align='center'><input class='main' size='6' " & myStat2 & " maxlength='5' name='sunend" & ctr & "' value='" & AEtime & "' onKeyUp=""javascript:return maskMe(this.value,this,'2',':');"" onBlur=""javascript:return maskMe(this.value,this,'2,6',':');"" " & LBcon & "></td>" & _
-					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & Trim(rsTS("totalhrs")) & "'></td>" & _
+					"<td align='center'><input class='main' size='6' maxlength='11' readonly  name='totalhrs" & ctr & "' value='" & trim(rsTS("totalhrs")) & "'></td>" & _
 					"<td align='center'>$<input class='main' size='6' " & myStat & " maxlength='5' name='suntoll" & ctr & "' value='" & Z_CZero(rsTS("toll")) & "' " & LBconToll & "></td>" & _
 					"<td align='center'><input type='checkbox' disabled " &  tmpCon & "></td>" & _
 					"<td align='center'><input type='checkbox' disabled " &  tmpConToll & "></td>" & _
@@ -665,12 +665,14 @@
 		<link href='style.css' type='text/css' rel='stylesheet'>
 		<script language='JavaScript'>
 		<!--
-		function uploadform(xxx)
-		{
+		function uploadform(xxx) {
 			/*newwindow = window.open('upload.asp?reqid=' + xxx,'name','height=175,width=400,scrollbars=0,directories=0,status=0,toolbar=0,resizable=0');
 			if (window.focus) {newwindow.focus()}
 				*/
-			window.location = "viewuploads.asp?reqid=" + xxx;
+			//window.location = "viewuploads.asp?reqid=" + xxx;
+			var url = String("viewuploads.asp?reqid=") + xxx;
+			uplwin = window.open(url, "Upload", "height=300,width=600,scrollbars=1,directories=0,status=0,toolbar=0,resizable=0");
+			if (window.focus) { uplwin.focus(); }
 		}
 		function reqfld2() {
 			<%=strjs2%>
