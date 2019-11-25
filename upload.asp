@@ -10,6 +10,7 @@ Function Z_MakeUniqueFileName()
 	Z_MakeUniqueFileName = tmpdate & tmpTime
 End Function
 uploaderror = 0
+
 If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 	Set oUpload = Server.CreateObject("SCUpload.Upload")
 	oUpload.Upload
@@ -24,10 +25,24 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 	folderpathvform = uploadpath & appID & "\vform"
 	folderpathtoll = uploadpath & appID & "\tolls"
 	Set fso = Server.CreateObject("Scripting.FileSystemObject")
+
+	ServerShare = Z_UNFixPath(uploadpath)
+	UserName = "acadatasrv2\LB_Webserv"
+	Password = "1LBVerifyIdentity1"
+	Set NetworkObject = CreateObject("WScript.Network")
+On Error Resume Next
+	NetworkObject.MapNetworkDrive "", ServerShare, False, UserName, Password
+	If Err.Number<>0 Then
+		Response.Write "Mapping: " & ServerShare & "<br />"
+		Response.Write "<p>Error connecting to file repository!</p><pre>" & Err.Description & "</pre><br />Please contact LanguageBank<br />"
+		Response.End
+	End If
+On Error Goto 0
+
 	If Not fso.FolderExists(folderpath) Then fso.CreateFolder(folderpath)
 	If Not fso.FolderExists(folderpathvform) Then fso.CreateFolder(folderpathvform)
 	If Not fso.FolderExists(folderpathtoll) Then fso.CreateFolder(folderpathtoll)
-	Set fso = Nothing
+	
 	ctr = 1
 	Do Until ctr = 3
 		If ctr = 1 Then upfile = "Verification Form"
@@ -51,12 +66,17 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 			UniqueFilename = Z_MakeUniqueFileName()
 			If ctr = 1 Then 
 				nFileName = "vform" & UniqueFilename & ".PDF"
-				oUpload.Files(ctr).Item(1).Save folderpathvform, nFileName
+				folder = folderpathvform
+				'oUpload.Files(ctr).Item(1).Save folderpathvform, nFileName
 			ElseIf ctr = 2 Then 
 				nFileName = "tollsandpark" & UniqueFilename & ".PDF"
-				oUpload.Files(ctr).Item(1).Save folderpathtoll, nFileName
+				folder = folderpathtoll
 			End If
+			oUpload.Files(ctr).Item(1).Save "C:\WORK\LSS-LBIS\uploads", nfilename
+			srcF = "C:\WORK\LSS-LBIS\uploads\" & nfilename
+			fso.CopyFile srcF, Z_FixPath(folder), True
 			Session("MSG") = "File Saved."
+
 			'save in DB
 			Set rsUpload = Server.CreateObject("ADODB.RecordSet")
 			rsUpload.Open "SELECT * FROM uploads WHERE timestamp = '" & Now & "'", g_strCONNupload, 1, 3
@@ -69,10 +89,16 @@ If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
 			rsUpload.Update
 			rsUpload.Close
 			Set rsUpload = Nothing
+
+			fso.DeleteFile srcF, True
 		End If
 		ctr = ctr + 1
 	Loop
 	Set oUpload = Nothing
+
+	NetworkObject.RemoveNetworkDrive ServerShare, True, False
+	Set NetworkObject = Nothing
+	Set fso = Nothing
 Else
 	appID = Request("ReqID")
 End If

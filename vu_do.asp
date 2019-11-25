@@ -28,10 +28,23 @@ Else
 	folderpathvform =	uploadpath & lngRID & "\vform"
 	folderpathtoll 	=	uploadpath & lngRID & "\tolls"
 	Set fso = Server.CreateObject("Scripting.FileSystemObject")
+
+	ServerShare = Z_UNFixPath(uploadpath)
+	UserName = "acadatasrv2\LB_Webserv"
+	Password = "1LBVerifyIdentity1"
+	Set NetworkObject = CreateObject("WScript.Network")
+On Error Resume Next
+	NetworkObject.MapNetworkDrive "", ServerShare, False, UserName, Password
+	If Err.Number<>0 Then
+		Response.Write "Mapping: " & ServerShare & "<br />"
+		Response.Write "<p>Error connecting to file repository!</p><pre>" & Err.Description & "</pre><br />Please contact LanguageBank<br />"
+		Response.End
+	End If
+On Error Goto 0
+
 	If Not fso.FolderExists(folderpath) Then fso.CreateFolder(folderpath)
 	If Not fso.FolderExists(folderpathvform) Then fso.CreateFolder(folderpathvform)
 	If Not fso.FolderExists(folderpathtoll) Then fso.CreateFolder(folderpathtoll)
-	Set fso = Nothing
 
 	oFileName = oUpload.Files(1).Item(1).filename
 	strExt = LCase(Z_GetExt(oFileName))
@@ -44,8 +57,14 @@ Else
 		folder = folderpathtoll
 	End If
 	filename = filename & UniqueFilename & "." & strExt
-	oUpload.Files(1).Item(1).Save folder, filename
+	oUpload.Files(1).Item(1).Save "C:\WORK\LSS-LBIS\uploads", filename
+	srcF = "C:\WORK\LSS-LBIS\uploads\" & filename
+	fso.CopyFile srcF, Z_FixPath(folder), True
 	Session("MSG") = "File Saved."
+
+	NetworkObject.RemoveNetworkDrive ServerShare, True, False
+	Set NetworkObject = Nothing
+	
 
 	Set rsUpload = Server.CreateObject("ADODB.RecordSet")
 	strSQL = "SELECT * FROM uploads"
@@ -59,6 +78,9 @@ Else
 	rsUpload.Update
 	rsUpload.Close
 	Set rsUpload = Nothing
+
+	fso.DeleteFile srcF, True
+	Set fso = Nothing
 End If
 
 Response.Redirect "viewuploads.asp?reqid=" & lngRID

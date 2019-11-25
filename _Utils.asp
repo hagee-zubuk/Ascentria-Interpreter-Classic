@@ -374,6 +374,14 @@ Function Z_FixPath(path)
 	End If
 End Function
 
+Function Z_UNFixPath(path)
+	If Right(path,1)<>"\" Then
+		Z_UNFixPath = path
+	Else
+		Z_UNFixPath = Left(path, Len(path) - 1)
+	End If
+End Function
+
 Function Z_FixVRoot(strWD, strBase)
 	Dim strRes, i, strArry
 	i = (Len(strWD)-Len(g_FilesPath))

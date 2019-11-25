@@ -16,11 +16,12 @@ If rsUploads.EOF Then
 End If
 
 strRID = Z_CLng(rsUploads("rid"))
+blnToll = CBool( rsUploads("type") )
 If lngUID = rsUploads("uid") Then
-	If ( rsUploads("type") = 0 ) Then
+	If (Not blnToll ) Then
 		subfold = "\vform\"
 		file_nm = "Verification_Form"
-	ElseIf ( rsUploads("type") = 1 ) Then
+	Else
 		subfold = "\tolls\"
 		file_nm = "Receipt_Toll_Park"
 	End If
@@ -30,8 +31,23 @@ rsUploads.Close
 Set rsUploads = Nothing
 
 Set fso = CreateObject("Scripting.FileSystemObject")
+
+ServerShare = Z_UNFixPath(uploadpath)
+UserName = "acadatasrv2\LB_Webserv"
+Password = "1LBVerifyIdentity1"
+Set NetworkObject = CreateObject("WScript.Network")
+On Error Resume Next
+NetworkObject.MapNetworkDrive "", ServerShare, False, UserName, Password
+If Err.Number<>0 Then
+	Response.Write "Mapping: " & ServerShare & "<br />"
+	Response.Write "<p>Error connecting to file repository!</p><pre>" & Err.Description & "</pre><br />Please contact LanguageBank<br />"
+	Response.End
+End If
+On Error Goto 0
+
 strPath = Request("fpath")
 strExt = LCase(Z_GetExt(viewpath))
+
 If fso.FileExists(viewpath) Then	
 	Set oFileStream = Server.CreateObject("ADODB.Stream")
 	oFileStream.Open
@@ -45,10 +61,10 @@ On Error Resume Next
 	Response.Clear
 	If (strExt = "pdf") Then
 		Response.ContentType = "application/pdf"
-		Response.AddHeader "Content-Disposition", "inline; filename=v-form.pdf"
+		Response.AddHeader "Content-Disposition", "attachment; filename=v-form.pdf"
 	Else
-		Response.ContentType = "image/" & strExt
-		Response.AddHeader "Content-Disposition", "inline; filename=v-form." & strExt
+		Response.ContentType = "application/octet-stream"
+		Response.AddHeader "Content-Disposition", "attachment; filename=v-form." & strExt
 	End If
 
 	Dim lSize, lBlocks
@@ -65,9 +81,12 @@ On Error Resume Next
 	oFileStream.Close
 	Set oFileStream= Nothing
 Else
-	Response.Write "<h1>Oops</h1><p>Unable to find the file, or access is denied accessing the file.</p>"
+	Response.Write "<h1>Uh Oh</h1><p>Unable to find the file, or access is denied accessing the file.</p>"
 	'Response.Write viewpath
 End If
+
+NetworkObject.RemoveNetworkDrive ServerShare, True, False
+Set NetworkObject = Nothing
 Set fso = Nothing
 %>
 
