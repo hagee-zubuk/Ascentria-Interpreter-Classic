@@ -51,7 +51,8 @@ g_strCONNW = "PROVIDER=Microsoft.Jet.OLEDB.4.0;DATA SOURCE=" & g_strDBPathW & ";
 'g_strCONNIntr.Open g_strCONNDB3
 
 'upload path
-uploadpath = "\\10.10.16.35\Interpreter_Upload\"
+'uploadpath = "\\10.10.16.35\Interpreter_Upload\"
+uploadpath = "\\10.10.16.30\VForm\"
 
 'FOR UPLOAD
 g_strCONNDBupload = "Provider=SQLOLEDB;Data Source=10.10.16.35;Initial Catalog=langbankuploads;Integrated Security=SSPI;"
