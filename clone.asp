@@ -58,7 +58,11 @@ If Request("Clone") <> "" Then
 		If rsClone("Emergency") = True Then tmpEmer = 1
 		tmpEmerFee = 0
 		If rsClone("EmerFee") = True Then tmpEmerFEE = 1
-		tmpGender	= Z_CZero(rsClone("Gender"))
+		If rsClone("Gender") = vbNull Then
+			tmpGender = -1
+		Else
+			tmpGender	= Z_CZero(rsClone("Gender"))
+		End If
 		'tmpMale = ""
 		'tmpFemale = ""
 		'If tmpGender = 0 Then 
@@ -112,7 +116,11 @@ If Request("Clone") <> "" Then
 	'rsMain("BilComment") = tmpEntry(33)
 	'rsMain("LBcomment") = tmpEntry(34)
 	'response.write "<!---" & tmpEntry(35) & "-->"
-	rsMain("Gender") = tmpGender
+	If tmpGender < 0 Then
+		rsMain("Gender") = vbNull
+	Else
+		rsMain("Gender") = tmpGender
+	End If
 	rsMain("Child") = false
 	If chkMinor = 1 Then rsMain("Child") = true
 	rsMain.Update

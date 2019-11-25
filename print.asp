@@ -66,11 +66,15 @@ If Not rsConfirm.EOF Then
 	tmpComm = tmpEmer2 & "<br>" & Replace(Z_FixNull(rsConfirm("comment")), vbcrlf, "<br>")
 	If rsConfirm("CliAdd") = True Then tmpDeptaddr = rsConfirm("CAddress") &", " & rsConfirm("CliAdrI") & ", " & rsConfirm("CCity") & ", " & rsConfirm("CState") & ", " & rsConfirm("CZip")
 	tmpHPID = Z_CZero(rsConfirm("hpid"))
-	tmpGender	= Z_CZero(rsConfirm("Gender"))
-	If tmpGender = 0 Then 
-		tmpSex = "MALE"
+	If rsConfirm("Gender") = vbNull Then
+		tmpSex = "Unknown"
 	Else
-		tmpSex = "FEMALE"
+		tmpGender	= Z_CZero(rsConfirm("Gender"))
+		If tmpGender = 0 Then 
+			tmpSex = "MALE"
+		Else
+			tmpSex = "FEMALE"
+		End If
 	End If
 	tmpMinor2 = "ADULT"
 	If rsConfirm("Child") Then tmpMinor2 = "MINOR"	

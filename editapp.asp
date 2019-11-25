@@ -112,13 +112,15 @@ If Not rsConfirm.EOF Then
 	tmpBilTIntr = rsConfirm("TT_Intr")
 	tmpBilMInst = rsConfirm("M_Inst")
 	tmpBilMIntr = rsConfirm("M_Intr")
-	tmpGender	= Z_CZero(rsConfirm("Gender"))
-	tmpMale = ""
-	tmpFemale = ""
-	If tmpGender = 0 Then 
-		tmpMale = "SELECTED"
-	Else
-		tmpFemale = "SELECTED"
+	If rsConfirm("Gender") <> vbNull Then
+		tmpGender	= Z_CZero(rsConfirm("Gender"))
+		tmpMale = ""
+		tmpFemale = ""
+		If tmpGender = 0 Then 
+			tmpMale = "SELECTED"
+		Else
+			tmpFemale = "SELECTED"
+		End If
 	End If
 	chkMinor = ""
 	If rsConfirm("Child") Then chkMinor = "CHECKED"
@@ -565,6 +567,7 @@ Set rsLang = Nothing
 										<td align='right'>Gender:</td>
 										<td>
 											<select class='seltxt' name='selGender' style='width: 75px;'>
+												<option value='-1' > &nbsp; </option>
 												<option value='0' <%=tmpMale%>>Male</option>
 												<option value='1' <%=tmpfeMale%>>Female</option>
 											</select>

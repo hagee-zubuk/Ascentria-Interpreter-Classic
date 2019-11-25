@@ -402,6 +402,7 @@ Set rsLang = Nothing
 										<td align='right'>Gender:</td>
 										<td>
 											<select class='seltxt' name='selGender' style='width: 75px;'>
+												<option value='-1'> &nbsp; </option>
 												<option value='0' <%=tmpMale%>>Male</option>
 												<option value='1' <%=tmpfeMale%>>Female</option>
 											</select>

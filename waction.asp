@@ -217,7 +217,11 @@ ElseIf Request("ctrl") = 4 Then
 			If Request("chkClientAdd") <> "" Then rsMain("CliAdd") = True
 			rsMain("CliAdrI") = Request("txtCliAddrI")
 			rsMain("Comment") = Request("txtcom")
-			rsMain("Gender") = Request("selGender")
+			If Z_CLng(Request("selGender")) < 0 Then
+				rsMain("Gender") = vbNull
+			Else
+				rsMain("Gender") = Request("selGender")
+			End If
 			rsMain("Child") = False
 			If Request("chkMinor") <> "" Then rsMain("Child") = True
 			rsMain.Update

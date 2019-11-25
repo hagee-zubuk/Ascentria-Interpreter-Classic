@@ -338,7 +338,11 @@ If Request("ctrl") = 1 Then
 		rsMain("BilComment") = tmpEntry(33)
 		rsMain("LBcomment") = tmpEntry(34)
 		'response.write "<!---" & tmpEntry(35) & "-->"
-		rsMain("Gender") = tmpEntry(35)
+		If tmpEntry(35) < 0 Then 
+			rsMain("Gender") = vbNull
+		Else	
+			rsMain("Gender") = tmpEntry(35)
+		End If
 		rsMain("Child") = false
 		If tmpEntry(36) <> "" Then rsMain("Child") = true
 		'rsMain("Child") = tmpEntry(36)
@@ -2760,7 +2764,11 @@ ElseIf Request("ctrl") = 13 Then 'EDIT APPOINTMENT INFORMATION
 			rsMain("CliAdrI") = tmpEntry(45)
 			tmpHPID = Z_CZero(rsMain("HPID"))
 			If Request("Intr") = 1 Then rsMain("IntrID") = "-1"
-			rsMain("Gender") = Request("selGender")
+			If Z_CLng(Request("selGender")) < 0 Then 
+				rsMain("Gender") = vbNull
+			Else	
+				rsMain("Gender") = Request("selGender")
+			End If
 			rsMain("Child") = False
 			If Request("chkMinor") <> "" Then rsMain("Child") = True
 			rsMain.Update
