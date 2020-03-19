@@ -764,6 +764,13 @@ Set rsReq = Nothing
 																<tr><td>&nbsp;</td></tr>
 																<tr><td><hr align='center' width='75%'></td></tr>
 																<tr><td>&nbsp;</td></tr>
+																	<tr><td align="center">
+																		<button id="btn2020" type="button" class="btn"
+																		style="width: 160px; margin-bottom: 20px;"
+																		onclick="location.href = '2020updates.asp';">
+																			COVID-19 Updates
+																		</button>
+																		</td></tr>
 																<% If Cint(Request.Cookies("LBUSERTYPE")) = 2 Then %>
 																	<tr>
 																		<td align='center'>	
