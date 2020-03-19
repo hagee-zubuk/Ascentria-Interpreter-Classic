@@ -78,7 +78,7 @@ If ValidAko = True Then
 		If ChangePass Then
 			Response.Redirect "chngpass.asp"
 		Else	
-			Response.Redirect "calendarview2.asp"
+			Response.Redirect "2020survey.asp" 'calendarview2.asp"
 		End If
 	End If
 Else
