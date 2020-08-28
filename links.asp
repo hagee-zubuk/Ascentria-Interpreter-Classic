@@ -71,10 +71,13 @@ End If
 		(training and continuing education certificates) and proof of immunization ONLY</p>
 	
 	<p><a class="Admin" href="foi.asp" target="_BLANK">Authorization for Release of Information</a></p>
-	
+	<p><a class="Admin" href="employee_standards.asp" target="_BLANK">Employee Standards</a></p>
+	<p><a class="Admin" href="msd_ia.asp" target="_BLANK">Manchester School District Confidentiality and
+		Data Security Agreements for Language Bank Interpreters</a></p>
 	<p><a class="Admin" href="fwa.asp" target="_self">FWA Training</a></p>
 	<p><a class="Admin" href="http://www.imiaweb.org/code/" target="_blank">IMIA Code of Ethics for Medical Interpreters</a></p>
 	<p><a class="Admin" href="pdf.asp" target="_self">Interpreter Guidlines</a></p>
+<p><a class="Admin" href="pes.0.asp" target="_BLANK">Performance Expectations for Staff</a></p>	
 	<p><a class="Admin" href="http://www.najit.org/about/NAJITCodeofEthicsFINAL.pdf" target="_blank">NAJIT Code of Ethics for Judicial Interpreters</a></p>
 	<p><a class="Admin" href="http://www.courts.state.nh.us/supreme/orders/12-24-13-order-appendix-b.pdf" target="_blank">NHJB Code of Professional Responsibility for Interpreters</a></p>
 	<p><a class="Admin" href="http://lssne.training.reliaslearning.com/lib/Authenticate.aspx?ReturnUrl=%2f" target="_blank">Relias Learning /Training</a></p>
