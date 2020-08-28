@@ -1,18 +1,21 @@
+<!doctype html>
 <%language=vbscript%>
 <!-- #include file="_Files.asp" -->
 <!-- #include file="_Announce.asp" -->
 <!-- #include file="_Utils.asp" -->
 <!-- #include file="_Security.asp" -->
-<!doctype html>
 <html lang="en">
-
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="ie=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<title>Language Bank - Interpreter Uploads</title>
-	<script language="JavaScript" type="text/JavaScript" src="js/jquery-3.3.1.min.js" ></script>
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+			integrity="sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs="
+			crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.css"
+			integrity="sha256-sxzrkOPuwljiVGWbxViPJ14ZewXLJHFJDn0bv+5hsDY=" crossorigin="anonymous" />
 	<link href='style.css' type='text/css' rel='stylesheet' />
 <style>
 table.reqinfo {
@@ -43,6 +46,12 @@ div.filelist {
 	text-decoration: underline;
 	background-color: yellow;
 }
+div.tolls {
+	display: inline-block; 
+}
+div.notathing {
+	color: lightgray;
+}
 </style>
 </head>
 	<body>
@@ -54,7 +63,7 @@ tmDate = Request.Cookies("tmpDate")
 ' blah
 Set rsTS = Server.CreateObject("ADODB.RecordSet")
 sqlTS = "SELECT req.[index], xrs.[statusname], Cfname, Clname, req.[apptimefrom], req.[apptimeto]" & _
-		", ins.[Facility], dep.[dept], req.[appDate] " & _
+		", ins.[Facility], dep.[dept], req.[appDate], req.[overmile] " & _
 		"FROM [request_T] AS req " & _
 		"INNER JOIN [xrStatus] AS xrs ON req.[Status]=xrs.[index] " & _
 		"INNER JOIN [dept_T] AS dep ON req.[DeptID]=dep.[index] " & _
@@ -72,6 +81,13 @@ If rsTS.EOF Then
 	Response.End
 End If
 
+If rsTS("overmile") Then
+	strTnPClass = "notathing"
+	strTnPDis = "disabled=""disabled"""
+Else
+	strTnPClass = ""
+	strTnPDis = ""
+End If
 Set rsUploads = Server.CreateObject("ADODB.RecordSet")
 lngVFCnt = 0 
 lngTlCnt = 0 
@@ -150,6 +166,9 @@ End If 'lngCnt > 0
 				</b></td></tr>		
 		<tr><td>Client:</td><td>
 				&nbsp;<%= rsTS("cfname")%>&nbsp;</td></tr>
+		<!-- tr><td>OverMile:</td><td>
+				<%= rsTS("overmile") %>
+				</td></tr -->
 	</tbody>
 </table>
 <%
@@ -174,7 +193,11 @@ End If
 						<label for="utype"><strong>Upload type:</strong></label></td>
 						<td>
 						<input type="radio" value="0" name="utype" id="type_v" checked="checked" />&nbsp;Verification Form<br />
-						<input type="radio" value="1" name="utype" id="type_t" />&nbsp;Toll and Parking Receipt<br />
+						<div class="tolls <%=strTnPClass%>">
+							<input type="radio" value="1" name="utype" id="type_t" <%=strTnPDis%> />
+						 	&nbsp;Toll and Parking Receipt
+						 </div>
+							
 						</td></tr>
 					</tbody></table>
 <div class="formatsmall">* PDF format preferred (JPG, PNG, GIF accepted)</div>

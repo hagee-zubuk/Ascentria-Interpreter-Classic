@@ -23,6 +23,7 @@ Function GetLangSurvey(lngID)
 		GetLangSurvey = "clientsurveyEnglish.pdf"
 	End If
 End Function
+
 Function Z_GetClass(deptID)
 	Z_GetClass = ""
 	Set rsClass = Server.CreateObject("ADODB.RecordSet")

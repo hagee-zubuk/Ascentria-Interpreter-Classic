@@ -64,7 +64,7 @@ If Not rsConfirm.EOF Then
 		tmpEmer2 = "(EMERGENCY)"
 	end if
 	tmpComm = tmpEmer2 & "<br>" & Replace(Z_FixNull(rsConfirm("comment")), vbcrlf, "<br>")
-	If rsConfirm("CliAdd") = True Then tmpDeptaddr = rsConfirm("CAddress") &", " & rsConfirm("CliAdrI") & ", " & rsConfirm("CCity") & ", " & rsConfirm("CState") & ", " & rsConfirm("CZip")
+	If rsConfirm("CliAdd") = True Then tmpDeptaddr = "<b>" & rsConfirm("CAddress") &", " & rsConfirm("CliAdrI") & ", " & rsConfirm("CCity") & ", " & rsConfirm("CState") & ", " & rsConfirm("CZip") & "</b>"
 	tmpHPID = Z_CZero(rsConfirm("hpid"))
 	If rsConfirm("Gender") = vbNull Then
 		tmpSex = "Unknown"
@@ -82,6 +82,20 @@ If Not rsConfirm.EOF Then
 	If rsConfirm("courtcall") Then courtcall = "<font size='1'><i>*Call patrient/client to remind them of appointment 48 hours prior to appointment.</i></font>"
 	leavemsg = "<font size='1'><i>*Do NOT leave DETAILED reminder call message on patient/client’s voice mail or with any family members.</i></font>"
 	If rsConfirm("leavemsg") Then leavemsg = "<font size='1'><i>*It is OK to leave/provide full appointment info on voice mail or with the family member.</i></font>"
+	tmpRmtFlag = rsConfirm("is_rmt")
+	If tmpRmtFlag Then
+		tmpRmtUrl = rsConfirm("rmt_url")
+		tmpRmtMID = Trim(rsConfirm("rmt_meetingid"))
+		tmpRmtPhn = Trim(rsConfirm("rmt_phone"))
+		tmpRmtPwd = rsConfirm("rmt_passwd")
+		tmpDeptaddr = "<div style=""margin-left: 1%; width: 98%;""><b>REMOTE MEETING:</b>" & _
+				"<div style=""display: block; overflow: visible; overflow-wrap: anywhere;"">" & _
+				"<a href=""" & tmpRmtUrl & """>" & tmpRmtUrl  & "</a></div>"
+		If Len(tmpRmtMID) Then tmpDeptaddr = tmpDeptaddr & "<br />" & vbCrLf & "Meeting ID: " & tmpRmtMID
+		If Len(tmpRmtPhn) Then tmpDeptaddr = tmpDeptaddr & "<br />" & vbCrLf & "Meeting Phone: " & tmpRmtPhn
+		If Len(tmpRmtPwd) Then tmpDeptaddr = tmpDeptaddr & "<br />" & vbCrLf & "Password: " & tmpRmtPwd
+		tmpDeptaddr = tmpDeptaddr & "</div>"
+	End If
 End If
 rsConfirm.Close
 Set rsConfirm = Nothing
@@ -118,7 +132,7 @@ If Not rsDept.EOF Then
 	tmpClassName = GetClass(rsDept("Class"))
 	If rsDept("dept") <> "" Then  tmpIname = tmpIname & " - " & rsDept("dept")
 	tmpdeptname = rsDept("dept")
-	If tmpDeptaddr = "" Then tmpDeptaddr = rsDept("address") & ", " & rsDept("InstAdrI") & ", " & rsDept("City") & ", " &  rsDept("state") & ", " & rsDept("zip")
+	If tmpDeptaddr = "" Then tmpDeptaddr = "<b>" & rsDept("address") & ", " & rsDept("InstAdrI") & ", " & rsDept("City") & ", " &  rsDept("state") & ", " & rsDept("zip") & "</b>"
 	tmpBaddr = rsDept("Baddress") & ", " & rsDept("BCity") & ", " &  rsDept("Bstate") & ", " & rsDept("Bzip")
 	tmpBContact = rsDept("Blname")
 	If Trim(rsDept("deptNotes")) <> "" Then strNotes = Trim(rsDept("deptNotes"))
@@ -191,6 +205,9 @@ myBC = PID & ".bmp"
 'name
 tmpName = tmpfName
 If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1) 
+
+'strBinZZ = "C:\work\LSS-LBIS\web\_barcode.asp?code=" & PID & "&height=20&width=2&mode=code39&text=0&fileout=" & myPath
+'Server.Execute(strBinZZ)
 %>
 <html>
 	<head>
@@ -202,6 +219,11 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 		 
 	  -->
 	</script>
+<style>
+table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collapse: collapse; }
+.zzz td:nth-child(1) { width: 55% !important; }
+</style>	
+
 	</head>
 		<body >
 			<table cellSpacing='0' cellPadding='0' width='100%' bgColor='white' border='0' align='center'>
@@ -215,7 +237,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 										<table cellSpacing='0' cellPadding='0'  bgcolor='#FFFFFF'  border='0' align='right'>
 											<tr>
 												<td align='center' width='100%' style='border: solid 1px;'>
-													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0&fileout=<%=myPath%>" style="visibility:hidden" >
+													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
 													<br />
 										    	&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
 										   		<br />
@@ -306,7 +328,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 										<table cellSpacing='0' cellPadding='0'  bgcolor='#FFFFFF'  border='0' align='right'>
 											<tr>
 												<td align='center' width='100%' style='border: solid 1px;'>
-													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0&fileout=<%=myPath%>" style="visibility:hidden" >
+													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
 													<br />
 										    	&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
 										   		<br />
@@ -924,7 +946,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 										<td class='printForm'>
 											Project ID:&nbsp;&nbsp;<b><%=PID%></b>
 											
-											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0&fileout=<%=myPath%>" style="visibility:hidden" >
+											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
 										</td>
 										<td class='printForm' Style='text-align: center;'>	
 											<br>
@@ -962,7 +984,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 											&nbsp;&nbsp;<b><%=tmpAppDate%></b>
 										</td>
 									</tr>
-									<tr height='25px'>
+									<tr>
 										<td class='printForm'>
 											Address for Service:<br>
 											&nbsp;&nbsp;<b><%=tmpDeptaddr%></b>
@@ -1080,7 +1102,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 					<% Else %>
 						<tr>
 							<td valign='top' align='center'>
-								<table cellSpacing='0' cellPadding='0' width='620px' bgColor='white' border='0'>
+								<table class="zzz">
 									<tr>
 										<td colspan='2' align='center' class='header' style='border:1px solid #000000;' bgcolor='#FFFFFF'>
 											Assignment
@@ -1092,7 +1114,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 											
 											<b><%=PID%></b>
 											
-											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0&fileout=<%=myPath%>" style="visibility:hidden">
+											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden">
 	
 										</td>
 										<td class='printForm' Style='text-align: center;'>	
@@ -1153,10 +1175,10 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 											<br><font size='1'><i>*appointment could be longer due to unforeseen situations</i></font>
 										</td>
 									</tr>
-									<tr height='25px'>
+									<tr>
 										<td class='printForm' valign='top'>
-											Address for Interpretation:<br>
-											&nbsp;&nbsp;<b><%=tmpDeptaddr%></b>
+											Address for Interpretation:<br />
+											<%=tmpDeptaddr%>
 										</td>
 										<% If tmpHPID = 0 Then %>
 											<td class='printForm'>

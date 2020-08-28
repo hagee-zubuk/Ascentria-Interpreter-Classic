@@ -3,6 +3,31 @@
 <!-- #include file="_Announce.asp" -->
 <!-- #include file="_Utils.asp" -->
 <!-- #include file="_UtilsReport.asp" -->
+<%
+Function GetLangSurvey2(lngID)
+	If lngID = 3 Then 
+		GetLangSurvey2 = "AR.html"
+	ElseIf lngID = 10 Then
+		GetLangSurvey2 = "FA.html"
+	ElseIf lngID = 17 Then
+		GetLangSurvey2 = "KO.html"
+	ElseIf lngID = 49 Then
+		GetLangSurvey2 = "NE.html"
+	ElseIf lngID = 21 Then
+		GetLangSurvey2 = "PT.html"
+	ElseIf lngID = 22 Then
+		GetLangSurvey2 = "RU.html"
+	ElseIf lngID = 24 Then
+		GetLangSurvey2 = "SO.html"
+	ElseIf lngID = 25 Then
+		GetLangSurvey2 = "ES.html"
+	ElseIf lngID = 29 Then
+		GetLangSurvey2 = "VI.html"
+	Else
+		GetLangSurvey2 = "EN.html"
+	End If
+End Function
+%>
 <!-- #include file="_Security.asp" -->
 <%
 
@@ -63,13 +88,40 @@ If Z_GetInfoFROMAppID(Request("ReqID"), "IntrID") = Session("UIntr") Then
 			"Main Office 978-937-6591"
 		theDoc.AddHtml(theText)
 	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 108 Then 'dhhs
-		LangID = Z_GetInfoFROMAppID(Request("ReqID"), "LangID")
-		theDoc2.Read(SurveyPath & GetLangSurvey(LangID))
-		theDoc.Append(theDoc2) 
+		lngReqID = Request("ReqID")
+		LangID = Z_GetInfoFROMAppID(lngReqID, "LangID")
+		AppDt = Z_GetInfoFROMAppID(lngReqID, "AppDate")
+		AppDt = Z_MDYDate(AppDt)
+		strFN = SurveyPath & GetLangSurvey2(LangID)
+
+		Set objFSO = CreateObject("Scripting.FileSystemObject")
+		Set objTextFile = objFSO.OpenTextFile(strFN, 1)
+		strHTML = objTextFile.ReadAll
+		objTextFile.Close
+		Set objTextFile = Nothing
+		strHTML = Replace(strHTML, "%%REQID%%", lngReqID)
+		strHTML = Replace(strHTML, "%%APPDATE%%", AppDt)
+		strFN = "C:\Work\LSS-LBIS\web\DHHS\vf." & lngReqID & ".html"
+		Set ftx = objFSO.CreateTextFile(strFN, True, False)
+		ftx.WriteLine strHTML
+		ftx.Close
+		strURL = "http://localhost/interpreter/DHHS/vf." & lngReqID & ".html"
+		theID = theDoc2.AddImageURL(strURL)
+		Do
+		  If Not theDoc2.Chainable(theID) Then Exit Do
+		  theDoc2.Page = theDoc2.AddPage()
+		  theID = theDoc2.AddImageToChain(theID)
+		Loop
+
+		theDoc.Append(theDoc2)
+
+		objFSO.DeleteFile strFN
+		Set objFSO = Nothing
 	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 323 And DeptID = 1924 Then 'wentworth
 		theDoc2.Read(DirectionPath & "DirWDH-CNS.pdf")
 		theDoc.Append(theDoc2) 
-	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 860 Then 'umass
+	ElseIf Z_GetInfoFROMAppID(Request("ReqID"), "InstID") = 860 Then ' UMass
+		' You should not be here anymore!!!
 		theDoc2.Read(DirectionPath & "READ ME FIRST.pdf")
 		theDoc.Append(theDoc2)
 		theDoc3.Read(DirectionPath & "Interpreters guidelines.pdf")
@@ -100,20 +152,19 @@ If Z_GetInfoFROMAppID(Request("ReqID"), "IntrID") = Session("UIntr") Then
 	'dload.Download tmpFile
 	'Set dload = Nothing
 	download = 1
-	
+
 	tmpfile = attachPDF
 	Set objStream = Server.CreateObject("ADODB.Stream")
-  objStream.Type = 1 'adTypeBinary
-  objStream.Open
-  objStream.LoadFromFile(tmpfile)
-  Response.ContentType = "application/x-unknown"
-  Response.Addheader "Content-Disposition", "attachment; filename=" & fname 
-  Response.BinaryWrite objStream.Read
-  objStream.SaveToFile tmpFile, 2
-  objStream.Close
-  Set objStream = Nothing
+	objStream.Type = 1 'adTypeBinary
+	objStream.Open
+	objStream.LoadFromFile(tmpfile)
+	Response.ContentType = "application/x-unknown"
+	Response.Addheader "Content-Disposition", "attachment; filename=" & fname 
+	Response.BinaryWrite objStream.Read
+	objStream.SaveToFile tmpFile, 2
+	objStream.Close
+	Set objStream = Nothing
 Else
-	response.write "There was an error in creating the Verification Form. Please close this browser and try again try again later."
+	Response.Write "There was an error in creating the Verification Form. Please close this browser and try again try again later."
 End If
-
 %>
