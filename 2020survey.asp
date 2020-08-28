@@ -63,9 +63,19 @@ input[type="text"] { text-align: center; height: 20px; padding: 2px 10px;}
 <div class="container">
 <h1>Language Bank Interpreter Survey</h1>
 <p>Please complete this survey before continuing on to the site.</p>
-	<form autocomplete="off" id="frmInt" method="POST" name="frmInt" >
+	<form autocomplete="off" id="frmInt" method="POST" name="frmInt" style="max-width: 640px;">
+		<!-- changes on 2020-06-05:
+
+
+1.    Have you traveled out of state within last 14 days?
+
+2.    Have you come in close contact with someone (within 6 feet) who has tested positive for COVID-19 or is suspected of having COVID-19? This includes members of your household as well as clients/patients.
+
+3.    Do you have a fever (greater than 100.4F or 38.0C) OR symptoms of lower respiratory illness such as cough, shortness of breath, OR difficulty breathing?
+-->
 	<div class="question" id="q1">
-		<h3>Have you travelled internationally in the past 14 days?</h3>
+		<!-- h3>Have you travelled internationally in the past 14 days?</h3 -->
+		<h3>Have you traveled out of New Hampshire, Massachusetts, Maine, Vermont and Rhode Island within last 14 days?</h3>
 		<div class="ynblock">
 		<input type="radio" name="q1" id="q1_yes" value="1" />&nbsp;YES<br />
 		<input type="radio" name="q1" id="q1_no"  value="0" />&nbsp;No<br />
@@ -73,7 +83,10 @@ input[type="text"] { text-align: center; height: 20px; padding: 2px 10px;}
 	</div>
 
 	<div class="question" id="q2">
-		<h3>Have you come in close contact with someone who has a laboratory-confirmed case of COVID-19, aka the coronavirus?</h3>
+		<!-- h3>Have you come in close contact with someone who has a laboratory-confirmed case of COVID-19, aka the coronavirus?</h3 -->
+		<h3>Have you come in close contact (within 6 feet) with someone who has tested positive
+			for COVID-19 or is suspected of having COVID-19? This includes members of your
+			household as well as clients/patients.</h3>
 		<div class="ynblock">
 			<input type="radio" name="q2" id="q2_yes" value="1" />&nbsp;YES<br />
 			<input type="radio" name="q2" id="q2_no"  value="0" />&nbsp;No<br />
@@ -86,7 +99,10 @@ input[type="text"] { text-align: center; height: 20px; padding: 2px 10px;}
 	</div>
 
 	<div class="question" id="q3">
-		<h3>Do you have a fever (greater than 100.4&deg;F or 38.0&deg;C) OR symptoms of lower respiratory illness such as cough, shortness of breath, OR difficulty breathing?</h3>
+		<!-- h3>Do you have a fever (greater than 100.4&deg;F or 38.0&deg;C) OR symptoms of lower respiratory illness such as cough, shortness of breath, OR difficulty breathing?</h3 -->
+		<h3>Do you have a fever (greater than 100.4&deg;F or 38.0&deg;C) OR symptoms of
+			lower respiratory illness such as cough, shortness of breath, OR difficulty
+			breathing?</h3>
 		<div class="ynblock">
 			<input type="radio" name="q3" id="q3_yes" value="1" />&nbsp;YES<br />
 			<input type="radio" name="q3" id="q3_no"  value="0" />&nbsp;No<br />
