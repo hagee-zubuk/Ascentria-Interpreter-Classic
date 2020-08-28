@@ -200,14 +200,13 @@ If Request("PDF") <> 1 Then
 	'rsPrint.Open sqlPrint, g_strCONN, 1, 3
 	'Set rsPrint = Nothing
 End If
-myPath = "C:\work\LSS-LBIS\web\Images\BC\" & PID & ".bmp"
-myBC = PID & ".bmp"
-'name
-tmpName = tmpfName
-If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1) 
 
-'strBinZZ = "C:\work\LSS-LBIS\web\_barcode.asp?code=" & PID & "&height=20&width=2&mode=code39&text=0&fileout=" & myPath
-'Server.Execute(strBinZZ)
+' name
+tmpName = tmpfName
+If tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1) 
+If tmpClass = 3 Then tmpName = tmpfName & " " & tmplName
+
+strBinZZ = "_barcode.asp?code=" & PID & "&height=20&width=1&mode=code39&text=0" 
 %>
 <html>
 	<head>
@@ -220,7 +219,7 @@ If tmpClass = 3 Or tmpClass = 5 Then tmpName = tmpfName & " " & Left(tmplName, 1
 	  -->
 	</script>
 <style>
-table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collapse: collapse; }
+table.zzz { width: 640px !important; padding: 0px; margin: 0px 1%; border-collapse: collapse; }
 .zzz td:nth-child(1) { width: 55% !important; }
 </style>	
 
@@ -237,12 +236,9 @@ table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collap
 										<table cellSpacing='0' cellPadding='0'  bgcolor='#FFFFFF'  border='0' align='right'>
 											<tr>
 												<td align='center' width='100%' style='border: solid 1px;'>
-													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
-													<br />
-										    	&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
-										   		<br />
-	                  			<b><%=PID%></b>
-	                  		</td>
+										    		&nbsp;<img src="<%=strBinZZ%>">&nbsp;
+										   			<br /><b><%=PID%></b>
+	                  							</td>
 											</tr>
 										</table>
 									</td>
@@ -328,12 +324,9 @@ table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collap
 										<table cellSpacing='0' cellPadding='0'  bgcolor='#FFFFFF'  border='0' align='right'>
 											<tr>
 												<td align='center' width='100%' style='border: solid 1px;'>
-													<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
-													<br />
-										    	&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
-										   		<br />
-	                  			<b><%=PID%></b>
-	                  		</td>
+											    	&nbsp;<img src="<%=strBinZZ%>">&nbsp;
+													<br /><b><%=PID%></b>
+	                  							</td>
 											</tr>
 										</table>
 									</td>
@@ -945,13 +938,9 @@ table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collap
 									<tr>
 										<td class='printForm'>
 											Project ID:&nbsp;&nbsp;<b><%=PID%></b>
-											
-											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden" >
 										</td>
-										<td class='printForm' Style='text-align: center;'>	
-											<br>
-											&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
-											<br><br>
+										<td class='printForm' Style='text-align: center; padding: 4px 2px 0px; margin: 0px;'>	
+											&nbsp;<img src="<%=strBinZZ%>">&nbsp;
 										</td>
 									</tr>
 									<tr height='25px'>
@@ -1111,16 +1100,10 @@ table.zzz { width: 640px !important; padding: 0px; margin: 0px 2%; border-collap
 									</tr>
 									<tr>
 										<td class='printForm' style="width: 310px; text-align: center;">
-											
 											<b><%=PID%></b>
-											
-											<img src="_barcode.asp?code=<%=PID%>&height=20&width=2&mode=code39&text=0" style="visibility:hidden">
-	
 										</td>
-										<td class='printForm' Style='text-align: center;'>	
-											<br>
-											&nbsp;<img src="Images/BC/<%=myBC%>">&nbsp;
-											<br><br>
+										<td class='printForm' Style='text-align: center; padding: 4px 2px 0px; margin: 0px;'>	
+											&nbsp;<img src="<%=strBinZZ%>">&nbsp;
 										</td>
 									</tr>
 									<tr height='25px'>

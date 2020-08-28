@@ -170,19 +170,35 @@ Set rsReq = Server.CreateObject("ADODB.RecordSet")
 If Request.Cookies("LBUSERTYPE") <> 2 Then
 	sqlReq = "SELECT * FROM request_T WHERE appDate = '" & tmpDate & "' ORDER BY appTimeFrom"
 Else
-	sqlReq = "SELECT [index], DeptID, InstID, IntrID, LangID, Status, Cphone, Clname, Cfname, appTimeFrom, appTimeTo, is_rmt FROM request_T WHERE appDate = '" & tmpDate & "' AND IntrID = " & Session("UIntr") & " " & _
-		"AND showintr = 1 AND NOT(STATUS = 2 OR STATUS = 3) ORDER BY appTimeFrom"
+	sqlReq = "SELECT req.[index], req.[DeptID], req.[InstID], req.[IntrID]" & _
+			", req.[LangID], req.[Status], req.[Cphone], req.[Clname], req.[Cfname]" & _
+			", req.[appTimeFrom], req.[appTimeTo], req.[is_rmt]" & _
+			", CASE WHEN itr.[index] IS NULL OR itr.[index] < 1 THEN 'N/A' " & _
+				"ELSE RTRIM(LTRIM(itr.[Last Name])) + ', ' + LTRIM(itr.[First Name]) " & _
+				"END AS [interpreter]" & _
+			", lan.[language], dep.[dept], dep.[class], ins.[facility] " & _
+			"FROM request_T AS req " & _
+			"INNER JOIN [dept_T] AS dep ON req.[deptid]=dep.[index] " & _
+			"INNER JOIN [institution_T] AS ins ON req.[instid]=ins.[index] " & _
+			"INNER JOIN [language_T] AS lan ON req.[langid]=lan.[index] " & _
+			"LEFT JOIN [interpreter_T] AS itr ON req.[intrid]=itr.[index] " & _
+			"WHERE req.[appDate] = '" & tmpDate & "' " & _
+			"AND req.[IntrID] = " & Session("UIntr") & " " & _
+			"AND req.[showintr] = 1 " & _
+			"AND STATUS NOT IN (2,3) " & _
+			" ORDER BY appTimeFrom"
 End If
 rsReq.Open sqlReq, g_strCONN, 3, 1
 Response.Write "<!-- " & vbCrLf & sqlReq & vbCrLf & " -->"
 If Not rsReq.EOF Then
 	Do Until rsReq.EOF
-		myDept =  GetMyDept(rsReq("DeptID"))
-		tmpInst = Split(GetInst(rsReq("InstID")), "|")
-		tmpIntr = GetIntr(rsReq("IntrID"))
+		isCourt = CBool( 3 = rsReq("class") )
+		myDept =  rsReq("dept")			' GetMyDept(rsReq("DeptID"))
+		tmpInst = rsReq("facility") 	' Split(GetInst(rsReq("InstID")), "|")
+		tmpIntr = rsReq("interpreter") 	' GetIntr(rsReq("IntrID"))
 		assigned = ""
 		If tmpIntr <> "N/A" Then assigned = "disabled"
-		tmpLang = GetLang(rsReq("LangID"))
+		tmpLang = rsReq("language") 	' GetLang(rsReq("LangID"))
 		tmpStat = MyStatus(rsReq("Status") )
 		tmpTime = CTime(rsReq("appTimeFrom"))
 		If Z_fixnull(rsReq("appTimeTo")) <> "" Then 
@@ -204,16 +220,20 @@ If Not rsReq.EOF Then
 					"<td align='center'><input class='btn' " & assigned & " type='button' value='Email' style='width: 40px;' onmouseover=""this.className='hovbtn'"" onmouseout=""this.className='btn'"" onclick='AssignMe(" & tmpID & ");'>"  & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'><nobr>" & strtmpTime & "</td>" & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'>" &  rsReq("Clname") & ", " & rsReq("Cfname") & "</td>" & _
-					"<td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpInst(0) & myDept & "</td><td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpLang & "</td>" & _
+					"<td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpInst & myDept & "</td><td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpLang & "</td>" & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpIntr & "</td><td align='center'><nobr>" &  tmpPhone & "</td>" & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpStat & "</td></tr>" & vbCrLf
 			Else
-				tmpCli = left(rsReq("Cfname"), 1) & ". " & left(rsReq("Clname"), 1) & ". "
+				If isCourt Then
+					tmpCli = rsReq("Clname") & ", " & rsReq("Cfname")
+				Else
+					tmpCli = left(rsReq("Cfname"), 1) & ". " & left(rsReq("Clname"), 1) & ". "
+				End If
 				tmpstr = "<tr bgcolor='" & rowcolor & "' onclick=''>" & _
 					"<td align='center'>&nbsp;</td>"  & _
 					"<td align='center'><nobr>" & strtmpTime & _
 					"</td><td align='center'>" &  tmpCli & "</td>" & _
-					"<td align='center'>" & tmpInst(0) & "</td><td align='center' onclick=''>" & tmpLang & "</td>" & _
+					"<td align='center'>" & tmpInst & "</td><td align='center' onclick=''>" & tmpLang & "</td>" & _
 					"<td align='center'>" & tmpIntr & "</td><td align='center'><nobr>N/A</td>" & _
 					"<td align='center'>" & tmpStat & "</td>"
 				'If Session("UsrID") <> 181 Then
@@ -227,7 +247,7 @@ If Not rsReq.EOF Then
 			tmpstr = "<tr bgcolor='#F5F5F5' onclick=''>" & _
 				"<td align='center'><input class='btn' type='button' value='View' style='width: 40px;' onmouseover=""this.className='hovbtn'"" onmouseout=""this.className='btn'"" onclick='PassMe(" & tmpID & ");'>" & _
 				"<td align='center'><nobr>" & strtmpTime & "</td>" & _
-				"<td align='center'>" & tmpInst(0) & myDept & "</td><td align='center'>" & tmpLang & "</td>" & _
+				"<td align='center'>" & tmpInst & myDept & "</td><td align='center'>" & tmpLang & "</td>" & _
 				"<td align='center'>" & tmpIntr & "</td><td align='center'><nobr>" &  tmpPhone & "</td>" & _
 				"<td align='center'>" & tmpStat & "</td></tr>" & vbCrLf
 		End If

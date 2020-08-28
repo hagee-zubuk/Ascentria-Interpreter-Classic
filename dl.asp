@@ -27,6 +27,14 @@ Function GetLangSurvey2(lngID)
 		GetLangSurvey2 = "EN.html"
 	End If
 End Function
+
+Function Z_GetURL(script)
+	strUrl = "http"
+	If Request.ServerVariables("HTTPS") = "on" Then strUrl = strUrl & "s"
+	strURL = strUrl & "://" & Request.ServerVariables("HTTP_HOST") & _
+			Replace(Request.ServerVariables("URL"), "dl.asp", script ) 
+	Z_GetURL = strUrl
+End Function
 %>
 <!-- #include file="_Security.asp" -->
 <%
@@ -39,12 +47,14 @@ If Z_GetInfoFROMAppID(Request("ReqID"), "IntrID") = Session("UIntr") Then
 	
 	fname = "VerificationForm" & Request("ReqID") & ".pdf"
 	attachPDF = pdfStr & fname
-	strUrl = "https://interpreter.thelanguagebank.org/interpreter/print.asp?PDF=1&ID=" & Request("ReqID") & "&IDIntr=" & Session("UIntr")
+	strUrl = Z_GetURL("print.asp") & "?PDF=1&ID=" & Request("ReqID") & "&IDIntr=" & Session("UIntr")
+
 	thedoc.HtmlOptions.PageCacheClear
 	theDoc.HtmlOptions.RetryCount = 3
 	theDoc.HtmlOptions.Timeout = 120000
 	theDoc.Pos.X = 10
 	theDoc.Pos.Y = 10
+
 	theID = theDoc.AddImageUrl(strUrl)
 	
 	Do
@@ -56,8 +66,8 @@ If Z_GetInfoFROMAppID(Request("ReqID"), "IntrID") = Session("UIntr") Then
 		theDoc.FontSize = 12 ' big text
 		theDoc.rect.Move 50, -50
 		theDoc.Page = theDoc.AddPage(1)
-		theText = "<b>ATTENTION INTERPRETERS</b><br><br><br><br>" & _
-			"When handling appointments at St. Vincent’s Hospital, you must follow the below procedures:<br><br><br>" & _ 
+		theText = "<b>ATTENTION INTERPRETERS</b><br /><br /><br /><br />" & _
+			"When handling appointments at St. Vincent’s Hospital, you must follow the procedures below:<br /><br /><br />" & _ 
 			"1)	BEFORE THE APPOINTMENT: Go to the mailroom. The mailroom is by the Loading Dock/Receiving Area.<br><br>" & _ 
 			"2) Ask for Ms. Fran Goulet (phone number 508-363-9310 if you need to contact her.)<br><br>" & _ 
 			"3) Sign the log book, take the badge Ms. Goulet hands you, and continue on to the appointment.<br><br>" & _ 
