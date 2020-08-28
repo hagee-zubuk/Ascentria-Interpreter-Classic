@@ -170,7 +170,7 @@ Set rsReq = Server.CreateObject("ADODB.RecordSet")
 If Request.Cookies("LBUSERTYPE") <> 2 Then
 	sqlReq = "SELECT * FROM request_T WHERE appDate = '" & tmpDate & "' ORDER BY appTimeFrom"
 Else
-	sqlReq = "SELECT [index], DeptID, InstID, IntrID, LangID, Status, Cphone, Clname, Cfname, appTimeFrom, appTimeTo FROM request_T WHERE appDate = '" & tmpDate & "' AND IntrID = " & Session("UIntr") & " " & _
+	sqlReq = "SELECT [index], DeptID, InstID, IntrID, LangID, Status, Cphone, Clname, Cfname, appTimeFrom, appTimeTo, is_rmt FROM request_T WHERE appDate = '" & tmpDate & "' AND IntrID = " & Session("UIntr") & " " & _
 		"AND showintr = 1 AND NOT(STATUS = 2 OR STATUS = 3) ORDER BY appTimeFrom"
 End If
 rsReq.Open sqlReq, g_strCONN, 3, 1
@@ -197,8 +197,10 @@ If Not rsReq.EOF Then
 		tmpID = rsReq("Index")
 		
 		If Cint(Request.Cookies("LBUSERTYPE")) <> 4 Then
+			rowcolor = "#F5F5F5"
+			If rsReq("is_rmt") Then rowcolor = "#a2ff84"
 			If  Cint(Request.Cookies("LBUSERTYPE")) <> 2 Then
-				tmpstr = "<tr bgcolor='#F5F5F5' onclick=''>" & _
+				tmpstr = "<tr bgcolor='" & rowcolor & "' onclick=''>" & _
 					"<td align='center'><input class='btn' " & assigned & " type='button' value='Email' style='width: 40px;' onmouseover=""this.className='hovbtn'"" onmouseout=""this.className='btn'"" onclick='AssignMe(" & tmpID & ");'>"  & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'><nobr>" & strtmpTime & "</td>" & _
 					"<td align='center' onclick='PassMe(" & tmpID & ");'>" &  rsReq("Clname") & ", " & rsReq("Cfname") & "</td>" & _
@@ -207,7 +209,7 @@ If Not rsReq.EOF Then
 					"<td align='center' onclick='PassMe(" & tmpID & ");'>" & tmpStat & "</td></tr>" & vbCrLf
 			Else
 				tmpCli = left(rsReq("Cfname"), 1) & ". " & left(rsReq("Clname"), 1) & ". "
-				tmpstr = "<tr bgcolor='#F5F5F5' onclick=''>" & _
+				tmpstr = "<tr bgcolor='" & rowcolor & "' onclick=''>" & _
 					"<td align='center'>&nbsp;</td>"  & _
 					"<td align='center'><nobr>" & strtmpTime & _
 					"</td><td align='center'>" &  tmpCli & "</td>" & _
@@ -703,6 +705,7 @@ Set rsReq = Nothing
 											<td align='right'>
 												Legend: <font color='#000000' size='2'>•</font>&nbsp;-&nbsp;Completed&nbsp;<font color='#0000FF' size='2'>•</font>&nbsp;-&nbsp;Missed&nbsp;<font color='#FF0000 ' size='2'>•</font>&nbsp;-&nbsp;Canceled&nbsp;
 													<font color='#FF00FF' size='2'>•</font>&nbsp;-&nbsp;Canceled (billable)
+													<font color='#a2ff84' size='2'>&#x2588;</font>&nbsp;-&nbsp;Remote
 											</td>
 										</tr>
 									</table>

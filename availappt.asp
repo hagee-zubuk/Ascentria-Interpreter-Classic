@@ -16,7 +16,7 @@ Set rsApp = Server.CreateObject("ADODB.RecordSet")
 'sqlApp = "SELECT appID, appdate, langID, deptID, appTimeFrom, appTimeTo, CliAdd, ccity, cstate, state, accept FROM appt_T, request_T WHERE appt_T.IntrID = " & _
 '	Session("UIntr") & " AND appt_T.[appID] = request_T.[index] AND [status] <> 3 AND NOT request_T.intrID > 0 " & _
 '	"AND appDate >= '" & frmDte & "' AND appdate <= '" & toDte & "' ORDER BY [accept], appDate"
-sqlApp = "SELECT req.[intrID], app.[IntrID], CliAdd, [ccity], [cstate]" & _
+sqlApp = "SELECT req.[intrID], app.[IntrID], CliAdd, [ccity], [cstate], req.[is_rmt]" & _
 		", dep.[city], dep.[state], appID, appdate, langID, deptID, appTimeFrom, appTimeTo, [accept] " & _
 		"FROM [appt_T] AS app " & _
 		"INNER JOIN [request_T] AS req ON app.[appID]=req.[index] " & _
@@ -32,6 +32,8 @@ x = 0
 Do Until rsApp.EOF
 	kulay = ""
 	If Z_IsOdd(x) Then kulay = "#FBEEB7"
+	If rsApp("is_rmt") Then kulay = "#a2ff84"
+	' &#x1f57f;
 	'tmpIname = GetInst(Z_GetInfoFROMAppID(rsApp("appID"), "instID"))
 	'myDept = GetDept(Z_GetInfoFROMAppID(rsApp("appID"), "deptID"))
 	tmpSalita = GetLang(rsApp("LangID")) '(Z_GetInfoFROMAppID(rsApp("appID"), "langID"))
@@ -201,6 +203,7 @@ Set rsApp = Nothing
 												</tbody>
 											</table>
 										</div>	
+										<p><font color='#a2ff84' size='2'>&#x2588;</font>&nbsp;-&nbsp;Remote</p>
 									</td>
 								</tr>
 							</table>
@@ -230,9 +233,9 @@ Set rsApp = Nothing
 					</tr>
 				</table>
 			</form>
-			<!-- code>
+			<code>
 			<%=sqlApp%>
-			</code -->
+			</code>
 		</body>
 	</head>
 </html>
